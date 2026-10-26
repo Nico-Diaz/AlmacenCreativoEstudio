@@ -1,0 +1,132 @@
+---
+import { nav } from '../data/contenido';
+---
+
+<div class="barra wrap eje">
+  <a class="marca" href="#inicio">Almacen Creativo</a>
+  <div class="barra__der">
+    <nav aria-label="Principal" class="barra__nav">
+      <ul>
+        {nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <a class="btn barra__accion" href="#contacto">Escribinos</a>
+    <details class="menu">
+      <summary>Menú</summary>
+      <ul>
+        {nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </details>
+  </div>
+</div>
+
+<style>
+  .barra {
+    align-items: center;
+    min-height: 88px;
+    font-size: var(--step-small);
+  }
+
+  .marca {
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+
+  .barra__der {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .barra__nav ul {
+    display: flex;
+    gap: 24px;
+  }
+
+  .barra__nav a {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 200ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .barra__nav a:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  .barra__accion {
+    min-height: 44px;
+    padding-inline: 18px;
+    font-size: var(--step-small);
+  }
+
+  .menu {
+    display: none;
+    position: relative;
+  }
+
+  .menu summary {
+    list-style: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: var(--step-body);
+  }
+
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu ul {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 20;
+    min-width: 220px;
+    padding: 12px 0;
+    background: var(--ink);
+    color: var(--paper);
+    transform-origin: top right;
+  }
+
+  .menu[open] ul {
+    animation: menu-in 200ms var(--ease-out);
+  }
+
+  .menu a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: var(--step-body);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .barra {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .barra__nav,
+    .barra__accion {
+      display: none;
+    }
+
+    .menu {
+      display: block;
+    }
+  }
+</style>

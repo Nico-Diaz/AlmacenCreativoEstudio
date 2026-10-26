@@ -1,0 +1,239 @@
+---
+import { Image } from 'astro:assets';
+import marca from '../assets/fotos/altier-marca.jpg';
+import { datos, teDamos, herramientas } from '../data/contenido';
+---
+
+<section class="nosotras wrap" id="nosotras" aria-labelledby="nosotras-t">
+  <div class="eje" data-reveal>
+    <span></span>
+    <div class="apertura">
+      <h2 id="nosotras-t">Quiénes somos</h2>
+      <p class="bajada">
+        Trabajamos como un almacén de barrio: guardamos, ordenamos y volvemos a poner en uso. Antes de comprar
+        nada miramos lo que ya tenés, y diseñamos a partir de eso.
+      </p>
+    </div>
+  </div>
+
+  <div class="mosaico grid">
+    <figure class="foto" data-reveal-img>
+      <Image
+        src={marca}
+        alt="Cartel de Altiér sobre cortinado negro, en un stand diseñado por el estudio"
+        widths={[700, 1100, 1600]}
+        sizes="(max-width: 760px) 100vw, 64vw"
+        loading="lazy"
+      />
+      <figcaption class="papel">
+        Tres diseñadoras con base en Mendoza. Escuchamos cómo se usa cada espacio y recién después dibujamos.
+      </figcaption>
+    </figure>
+
+    <div class="lado">
+      <div class="plano" role="img" aria-label="Planta de una casa, con un punto que marca dónde empieza cada proyecto">
+        <svg viewBox="0 0 120 260" aria-hidden="true">
+          <g fill="var(--ground)">
+            <rect x="10" y="10" width="48" height="44"></rect>
+            <rect x="62" y="10" width="48" height="44"></rect>
+            <rect x="10" y="58" width="48" height="44"></rect>
+            <rect x="10" y="106" width="48" height="44"></rect>
+            <rect x="10" y="154" width="48" height="44"></rect>
+            <rect x="10" y="202" width="100" height="48"></rect>
+          </g>
+          <circle cx="34" cy="32" r="7" fill="var(--ink)"></circle>
+        </svg>
+      </div>
+      <dl class="datos">
+        {
+          datos.map((d) => (
+            <div>
+              <dt>{d.label}</dt>
+              <dd>{d.valor}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <div class="eje registro" data-reveal>
+    <p class="al-margen">Somos un estudio nuevo: seguimos cada encargo de cerca, de la primera charla a la entrega.</p>
+    <div class="listas">
+      <div>
+        <h3>Lo que te damos</h3>
+        <ul>{teDamos.map((r) => <li><span>{r.nombre}</span><span class="nota">{r.nota}</span></li>)}</ul>
+      </div>
+      <div>
+        <h3>Herramientas con las que trabajamos</h3>
+        <ul>{herramientas.map((r) => <li><span>{r.nombre}</span><span class="nota">{r.nota}</span></li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nosotras {
+    padding-block: var(--section-gap);
+  }
+
+  .apertura {
+    display: grid;
+    gap: 24px;
+  }
+
+  .bajada {
+    max-width: 40ch;
+    font-size: var(--step-lead);
+    line-height: 1.35;
+  }
+
+  .mosaico {
+    margin-top: 72px;
+    row-gap: 16px;
+    align-items: start;
+  }
+
+  .foto {
+    position: relative;
+    grid-column: 1 / span 8;
+  }
+
+  .foto :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: 50% 22%;
+  }
+
+  .papel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(340px, 50%);
+    padding: 20px;
+    background: var(--paper);
+    font-size: var(--step-body);
+    line-height: 1.45;
+  }
+
+  .lado {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: 24px;
+  }
+
+  .plano {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    background: var(--ink);
+    padding: 20px;
+  }
+
+  .plano svg {
+    height: 100%;
+    max-height: 240px;
+    width: auto;
+  }
+
+  .datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 16px;
+  }
+
+  .datos dt {
+    font-size: var(--step-small);
+    color: var(--ink-soft);
+  }
+
+  .datos dd {
+    font-size: var(--step-body);
+    font-weight: 500;
+  }
+
+  .registro {
+    margin-top: clamp(64px, 8vw, 120px);
+    align-items: start;
+  }
+
+  .al-margen {
+    max-width: 28ch;
+    font-size: var(--step-body);
+    color: var(--ink-soft);
+  }
+
+  .listas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px var(--col-gap);
+  }
+
+  .listas h3 {
+    font-size: var(--step-body);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+
+  .listas ul {
+    display: grid;
+    gap: 8px;
+  }
+
+  .listas li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .nota {
+    color: var(--ink-soft);
+    text-align: right;
+  }
+
+  @media (max-width: 960px) {
+    .foto {
+      grid-column: 1 / -1;
+    }
+
+    .lado {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .apertura {
+      grid-column: 1;
+    }
+
+    .eje > span:empty {
+      display: none;
+    }
+
+    .foto :global(img) {
+      aspect-ratio: 4 / 3;
+    }
+
+    .papel {
+      position: static;
+      width: auto;
+    }
+
+    .lado {
+      grid-template-columns: 1fr;
+    }
+
+    .plano {
+      aspect-ratio: 3 / 2;
+    }
+
+    .listas {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

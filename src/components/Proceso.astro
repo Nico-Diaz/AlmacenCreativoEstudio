@@ -1,0 +1,83 @@
+---
+import { pasos } from '../data/contenido';
+---
+
+<section class="proceso" id="proceso" aria-labelledby="proceso-t">
+  <div class="wrap">
+    <div class="eje">
+      <span></span>
+      <h2 id="proceso-t">Cómo trabajamos</h2>
+    </div>
+    <ol class="escalera grid" data-reveal>
+      {
+        pasos.map((p, i) => (
+          <li class="paso" style={`--col:${1 + i * 2};--i:${i}`}>
+            <p class="linea">{p.linea}</p>
+            <p class="detalle">{p.detalle}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .proceso {
+    background: var(--ink);
+    color: var(--ground);
+    padding-block: var(--section-gap);
+  }
+
+  .escalera {
+    margin-top: clamp(56px, 7vw, 104px);
+    row-gap: 56px;
+  }
+
+  .paso {
+    grid-column: var(--col) / -1;
+  }
+
+  .linea {
+    font-size: var(--step-head);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .paso:last-child .linea {
+    color: var(--paper);
+  }
+
+  .detalle {
+    margin-top: 12px;
+    max-width: 34ch;
+    font-size: var(--step-body);
+  }
+
+  @media (max-width: 760px) {
+    .eje > span:empty {
+      display: none;
+    }
+
+    .escalera {
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 40px;
+    }
+
+    .paso {
+      grid-column: 1;
+      padding-left: calc(var(--i, 0) * 6vw);
+    }
+
+    .linea {
+      font-size: 8.4vw;
+      white-space: normal;
+    }
+
+    .detalle {
+      font-size: var(--step-body);
+    }
+  }
+</style>

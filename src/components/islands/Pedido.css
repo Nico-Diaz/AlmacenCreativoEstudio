@@ -1,0 +1,192 @@
+.cupon {
+  --notch: 28px;
+  --seam: 46%;
+  --card-light: color-mix(in srgb, var(--ground) 14%, var(--ink));
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--seam) 1fr;
+  min-height: 420px;
+  background: var(--ink);
+  color: var(--ground);
+}
+
+.cupon::before,
+.cupon::after {
+  content: '';
+  position: absolute;
+  left: var(--seam);
+  width: var(--notch);
+  height: var(--notch);
+  border-radius: 50%;
+  background: var(--ground);
+  transform: translateX(-50%);
+}
+
+.cupon::before {
+  top: calc(var(--notch) / -2);
+}
+
+.cupon::after {
+  bottom: calc(var(--notch) / -2);
+}
+
+.cupon__izq {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 48px;
+}
+
+.cupon__izq h2 {
+  font-size: var(--step-mid);
+  line-height: 1;
+}
+
+.cupon__izq p {
+  max-width: 32ch;
+  font-size: var(--step-body);
+}
+
+.cupon__der {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 40px 48px 40px 44px;
+  border-left: 5px dotted var(--ground);
+}
+
+.cupon fieldset {
+  border: 0;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.cupon legend {
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: var(--step-body);
+  font-weight: 500;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 0;
+  background: var(--card-light);
+  color: var(--paper);
+  font: 400 var(--step-body) / 1 var(--font);
+  cursor: pointer;
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.chip:active {
+  transform: scale(0.97);
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chip[aria-pressed='false']:hover {
+    background: var(--ink-deep);
+  }
+}
+
+.campo {
+  min-height: 52px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 0;
+  background: var(--card-light);
+  color: var(--paper);
+  font: 400 var(--step-body) / 1.4 var(--font);
+  caret-color: var(--paper);
+}
+
+.campo::placeholder {
+  color: color-mix(in srgb, var(--paper) 88%, var(--ink));
+}
+
+.campo:focus-visible,
+.chip:focus-visible,
+.enviar:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+}
+
+.cupon__resumen {
+  margin: 6px 0 4px;
+  font-size: var(--step-body);
+  color: var(--paper);
+}
+
+.enviar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ink-deep);
+  color: var(--paper);
+  font: 500 var(--step-body) / 1 var(--font);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease;
+}
+
+.enviar:active {
+  transform: scale(0.98);
+}
+
+.enviar--wa {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .enviar:hover {
+    background: #4a160f;
+  }
+
+  .enviar--wa:hover {
+    background: var(--ground-soft);
+  }
+}
+
+@media (max-width: 860px) {
+  .cupon {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .cupon::before,
+  .cupon::after {
+    display: none;
+  }
+
+  .cupon__izq {
+    padding: 32px 24px;
+  }
+
+  .cupon__der {
+    padding: 32px 24px;
+    border-left: 0;
+    border-top: 5px dotted var(--ground);
+  }
+}

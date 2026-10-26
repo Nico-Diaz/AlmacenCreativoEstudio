@@ -1,0 +1,73 @@
+---
+import { preguntas } from '../data/contenido';
+---
+
+<section class="faq wrap" id="preguntas" aria-labelledby="preguntas-t">
+  <div class="tabla">
+    <div class="fila">
+      <h2 id="preguntas-t" class="pregunta titulo">Preguntas frecuentes</h2>
+    </div>
+    {
+      preguntas.map((p) => (
+        <div class="fila" data-reveal>
+          <h3 class="pregunta">{p.q}</h3>
+          <p class="respuesta">{p.a}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding-block: var(--section-gap);
+  }
+
+  .tabla {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(48px, 5vw, 80px);
+  }
+
+  .fila {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    align-items: baseline;
+  }
+
+  .pregunta {
+    grid-column: 1 / span 6;
+    font-size: var(--step-mid);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .titulo {
+    color: var(--ink-soft);
+  }
+
+  .respuesta {
+    grid-column: 8 / span 5;
+    max-width: 40ch;
+    font-size: var(--step-body);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 760px) {
+    .fila {
+      grid-template-columns: 1fr;
+      row-gap: 12px;
+    }
+
+    .pregunta,
+    .respuesta {
+      grid-column: 1;
+    }
+
+    .pregunta {
+      font-size: var(--step-lead);
+    }
+  }
+</style>

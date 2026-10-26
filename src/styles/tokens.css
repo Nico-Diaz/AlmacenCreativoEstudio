@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ground: #afc8de;
+  --ground-soft: #c9dae9;
+  --ink: #8c2e21;
+  --ink-deep: #5e1d15;
+  --ink-soft: #3c5266;
+  --paper: #e8e6e3;
+
+  --font: 'Switzer', system-ui, sans-serif;
+
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-mid: clamp(1.625rem, 1rem + 1.6vw, 2.5rem);
+  --step-display: clamp(3rem, 1rem + 6vw, 7.5rem);
+
+  --gutter: clamp(20px, 3.3vw, 48px);
+  --col-gap: clamp(16px, 2vw, 32px);
+  --axis: 42vw;
+  --section-gap: clamp(96px, 11vw, 176px);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}

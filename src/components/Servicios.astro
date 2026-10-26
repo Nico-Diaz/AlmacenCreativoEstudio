@@ -1,0 +1,149 @@
+---
+import { Image } from 'astro:assets';
+import { servicios } from '../data/contenido';
+import casa from '../assets/fotos/pinotea-a.jpg';
+import local from '../assets/fotos/esquina-a.jpg';
+import ventana from '../assets/fotos/altier-pared.jpg';
+import mesa from '../assets/fotos/trombetta-stand.jpg';
+
+const slot = { widths: [120, 240], sizes: '120px', loading: 'lazy' as const };
+---
+
+<section class="servicios" id="servicios" aria-labelledby="servicios-t">
+  <div class="wrap">
+    <div class="eje">
+      <span></span>
+      <h2 id="servicios-t">Qué hacemos</h2>
+    </div>
+
+    <p class="frase">
+      Diseñamos casas <Image class="slot" src={casa} alt="" {...slot} />, locales <Image
+        class="slot"
+        src={local}
+        alt=""
+        {...slot}
+      />, vidrieras <Image class="slot" src={ventana} alt="" {...slot} /> y eventos <Image
+        class="slot"
+        src={mesa}
+        alt=""
+        {...slot}
+      />, siempre a partir de lo que ya está.
+    </p>
+
+    <div class="sumario eje">
+      <p class="al-margen">
+        Seis servicios con un mismo criterio: aprovechar lo que existe y sumar solo lo que hace falta.
+      </p>
+      <ul class="lista" data-reveal>
+        {
+          servicios.map((s) => (
+            <li class="servicio">
+              <h3>{s.nombre}</h3>
+              <p>{s.detalle}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="cierre eje">
+      <span></span>
+      <div>
+        <p>¿No sabés por cuál empezar? Contanos tu espacio y te recomendamos una.</p>
+        <a class="btn" href="#contacto">Contanos tu espacio</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .servicios {
+    background: var(--paper);
+    padding-block: var(--section-gap);
+  }
+
+  .frase {
+    margin-top: 48px;
+    max-width: 30em;
+    font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .frase :global(.slot) {
+    display: inline-block;
+    width: 1.9em;
+    height: 1em;
+    object-fit: cover;
+    vertical-align: -0.12em;
+  }
+
+  .sumario {
+    margin-top: clamp(64px, 8vw, 112px);
+    align-items: start;
+  }
+
+  .al-margen {
+    max-width: 28ch;
+    color: var(--ink-soft);
+  }
+
+  .lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(40px, 4vw, 56px) clamp(32px, 4vw, 64px);
+  }
+
+  .servicio h3 {
+    font-size: var(--step-lead);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .servicio p {
+    margin-top: 12px;
+    max-width: 40ch;
+    font-size: var(--step-body);
+    line-height: 1.5;
+  }
+
+  .cierre {
+    margin-top: clamp(56px, 6vw, 88px);
+  }
+
+  .cierre div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 32px;
+  }
+
+  .cierre p {
+    max-width: 34ch;
+  }
+
+  @media (max-width: 760px) {
+    .eje > span:empty {
+      display: none;
+    }
+
+    .frase {
+      font-size: 6vw;
+      line-height: 1.25;
+    }
+
+    .frase :global(.slot) {
+      width: 1.5em;
+    }
+
+    .lista {
+      grid-template-columns: 1fr;
+    }
+
+    .cierre .btn {
+      width: 100%;
+    }
+  }
+</style>

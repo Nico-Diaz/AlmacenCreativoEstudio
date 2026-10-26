@@ -1,0 +1,27 @@
+---
+import Pedido from './islands/Pedido';
+import { contacto } from '../data/contenido';
+---
+
+<section class="contacto wrap" id="contacto">
+  <div class="marco">
+    <Pedido client:visible email={contacto.email} whatsapp={contacto.whatsapp} />
+  </div>
+</section>
+
+<style>
+  .contacto {
+    padding-block: clamp(80px, 9vw, 120px);
+  }
+
+  .marco {
+    width: min(100%, calc(10 / 12 * 100% + 2 * var(--col-gap)));
+    margin-inline: auto;
+  }
+
+  @media (max-width: 760px) {
+    .contacto {
+      padding-inline: 12px;
+    }
+  }
+</style>

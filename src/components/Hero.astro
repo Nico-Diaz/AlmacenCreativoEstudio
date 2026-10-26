@@ -1,0 +1,165 @@
+---
+import { Image } from 'astro:assets';
+import Header from './Header.astro';
+import stand from '../assets/fotos/trombetta-stand.jpg';
+import pared from '../assets/fotos/altier-pared.jpg';
+import ruleta from '../assets/fotos/altier-ruleta.jpg';
+---
+
+<header class="masthead" id="inicio">
+  <Header />
+
+  <div class="mosaico">
+    <Image
+      class="celda celda--a"
+      src={stand}
+      alt="Stand rojo y blanco de Óptica Trombetta bajo una carpa en el torneo Máximo Navesi"
+      widths={[600, 1000, 1400]}
+      sizes="(max-width: 760px) 100vw, 38vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="celda celda--tinta"></div>
+    <Image
+      class="celda celda--b"
+      src={pared}
+      alt="Pared de exhibición de Altiér beauty con estantes de productos y podios espejados"
+      widths={[600, 1000, 1400]}
+      sizes="(max-width: 760px) 50vw, 30vw"
+      loading="eager"
+    />
+    <Image
+      class="celda celda--c"
+      src={ruleta}
+      alt="Ruleta de premios de Altiér beauty en su stand"
+      widths={[400, 800]}
+      sizes="(max-width: 760px) 50vw, 18vw"
+      loading="eager"
+    />
+  </div>
+
+  <div class="titular wrap eje">
+    <p class="nota" data-after-lines>
+      Almacen Creativo<br />
+      Diseño de interiores en Mendoza, desde 2025.
+    </p>
+    <div class="titular__cuerpo">
+      <h1 class="lineas">
+        <span class="linea"><span data-line style="--i:0">Interiores con</span></span>
+        <span class="linea"><span data-line style="--i:1">lo que ya tenés</span></span>
+      </h1>
+      <div class="copete" data-after-lines>
+        <p>Casas, locales, vidrieras y eventos. Rescatamos lo que ya está y diseñamos alrededor.</p>
+        <a class="btn" href="#contacto">Contanos tu espacio</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    min-height: 100svh;
+  }
+
+  .mosaico {
+    display: grid;
+    grid-template-columns: 38fr 12fr 30fr 20fr;
+    height: 40svh;
+    min-height: 280px;
+  }
+
+  .celda {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+  }
+
+  .celda--a {
+    object-position: 50% 60%;
+  }
+
+  .celda--b,
+  .celda--c {
+    object-position: 50% 35%;
+  }
+
+  .celda--tinta {
+    background: var(--ink);
+  }
+
+  .titular {
+    align-items: end;
+    padding-top: clamp(32px, 5vh, 64px);
+    padding-bottom: clamp(32px, 6vh, 72px);
+  }
+
+  .nota {
+    max-width: 32ch;
+    font-size: var(--step-body);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    padding-bottom: 0.4em;
+  }
+
+  .titular__cuerpo {
+    display: grid;
+    gap: 32px;
+  }
+
+  h1 {
+    font-size: var(--step-display);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+  }
+
+  .copete {
+    display: grid;
+    grid-template-columns: minmax(0, 36ch) auto;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px 40px;
+  }
+
+  .copete p {
+    font-size: var(--step-lead);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 960px) {
+    .copete {
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: start;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .mosaico {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 0.6fr;
+      height: 42svh;
+    }
+
+    .celda--a {
+      grid-column: 1 / -1;
+    }
+
+    .celda--tinta {
+      display: none;
+    }
+
+    .nota {
+      order: 2;
+    }
+
+    h1 {
+      font-size: 12.5vw;
+    }
+
+    .copete .btn {
+      width: 100%;
+    }
+  }
+</style>
