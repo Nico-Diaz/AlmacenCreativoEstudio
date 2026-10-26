@@ -1,149 +1,176 @@
 ---
-import { Image } from 'astro:assets';
-import { servicios } from '../data/contenido';
-import casa from '../assets/fotos/pinotea-a.jpg';
-import local from '../assets/fotos/esquina-a.jpg';
-import ventana from '../assets/fotos/altier-pared.jpg';
-import mesa from '../assets/fotos/trombetta-stand.jpg';
+import { servicios, teDamos, herramientas } from '../data/contenido';
 
-const slot = { widths: [120, 240], sizes: '120px', loading: 'lazy' as const };
+const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+
+const grupos = [
+  { nombre: 'Servicios', items: servicios.map((s) => ({ nombre: s.nombre, desc: s.detalle })) },
+  { nombre: 'Lo que te damos', items: teDamos.map((t) => ({ nombre: t.nombre, desc: `${cap(t.nota)}.` })) },
+  { nombre: 'Herramientas', items: herramientas.map((h) => ({ nombre: h.nombre, desc: `Para ${h.nota}.` })) },
+];
 ---
 
-<section class="servicios" id="servicios" aria-labelledby="servicios-t">
-  <div class="wrap">
-    <div class="eje">
-      <span></span>
-      <h2 id="servicios-t">Qué hacemos</h2>
-    </div>
+<section class="servicios wrap" id="servicios" aria-labelledby="servicios-t" data-indice>
+  <h2 id="servicios-t">Qué hacemos</h2>
 
-    <p class="frase">
-      Diseñamos casas <Image class="slot" src={casa} alt="" {...slot} />, locales <Image
-        class="slot"
-        src={local}
-        alt=""
-        {...slot}
-      />, vidrieras <Image class="slot" src={ventana} alt="" {...slot} /> y eventos <Image
-        class="slot"
-        src={mesa}
-        alt=""
-        {...slot}
-      />, siempre a partir de lo que ya está.
-    </p>
+  <div class="indice grid">
+    {
+      grupos.map((g, gi) => (
+        <div class="grupo" style={`--col:${1 + gi * 3}`}>
+          <h3>{g.nombre}</h3>
+          <ul data-reveal>
+            {g.items.map((it) => (
+              <li>
+                <button type="button" class="item" data-nombre={it.nombre} data-desc={it.desc}>
+                  {it.nombre}
+                </button>
+                <span class="item__desc">{it.desc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
 
-    <div class="sumario eje">
-      <p class="al-margen">
-        Seis servicios con un mismo criterio: aprovechar lo que existe y sumar solo lo que hace falta.
-      </p>
-      <ul class="lista" data-reveal>
-        {
-          servicios.map((s) => (
-            <li class="servicio">
-              <h3>{s.nombre}</h3>
-              <p>{s.detalle}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <div class="cierre eje">
-      <span></span>
-      <div>
-        <p>¿No sabés por cuál empezar? Contanos tu espacio y te recomendamos una.</p>
-        <a class="btn" href="#contacto">Contanos tu espacio</a>
+    <div class="panel">
+      <div class="panel__texto" data-panel aria-hidden="true">
+        <p class="panel__nombre" data-panel-nombre>{servicios[0].nombre}</p>
+        <p data-panel-desc>{servicios[0].detalle}</p>
       </div>
+      <p class="panel__cierre">
+        ¿No sabés por cuál empezar? <a class="link" href="#contacto">Contanos tu espacio</a>.
+      </p>
     </div>
   </div>
 </section>
 
 <style>
   .servicios {
-    background: var(--paper);
     padding-block: var(--section-gap);
   }
 
-  .frase {
-    margin-top: 48px;
-    max-width: 30em;
-    font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
+  h2 {
+    font-size: var(--step-lead);
+    font-family: var(--serif);
+    line-height: 1.2;
   }
 
-  .frase :global(.slot) {
-    display: inline-block;
-    width: 1.9em;
-    height: 1em;
-    object-fit: cover;
-    vertical-align: -0.12em;
-  }
-
-  .sumario {
-    margin-top: clamp(64px, 8vw, 112px);
+  .indice {
+    margin-top: 96px;
     align-items: start;
   }
 
-  .al-margen {
-    max-width: 28ch;
+  .grupo {
+    grid-column: var(--col) / span 3;
+  }
+
+  .grupo h3 {
+    font-weight: 500;
+    margin-bottom: 1.3em;
+  }
+
+  .grupo ul {
+    display: grid;
+  }
+
+  .item {
+    display: block;
+    width: 100%;
+    padding: 3px 0;
+    border: 0;
+    background: none;
+    color: var(--ink-soft);
+    font: 400 var(--step-body) / 1.3 var(--sans);
+    text-align: left;
+    cursor: default;
+    transition: color 180ms ease;
+  }
+
+  .item:hover,
+  .item:focus-visible,
+  .item.is-on {
+    color: var(--ink);
+  }
+
+  /* Oculta a la vista en escritorio (el panel la muestra), pero la leen los lectores de pantalla. */
+  .item__desc {
+    position: absolute;
+    width: 1px; /* taste-skill-ignore: patrón sr-only, no es una línea */
+    height: 1px; /* taste-skill-ignore: patrón sr-only, no es una línea */
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .panel {
+    grid-column: 10 / -1;
+    display: grid;
+    gap: 32px;
+  }
+
+  .panel__texto {
+    min-height: 7.5em;
+    transition: opacity 220ms ease;
+  }
+
+  .panel__texto.is-swapping {
+    opacity: 0;
+  }
+
+  .panel__nombre {
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .panel__cierre {
     color: var(--ink-soft);
   }
 
-  .lista {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(40px, 4vw, 56px) clamp(32px, 4vw, 64px);
-  }
+  @media (max-width: 960px) {
+    .indice {
+      row-gap: 48px;
+    }
 
-  .servicio h3 {
-    font-size: var(--step-lead);
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-  }
+    .grupo {
+      grid-column: span 6;
+    }
 
-  .servicio p {
-    margin-top: 12px;
-    max-width: 40ch;
-    font-size: var(--step-body);
-    line-height: 1.5;
-  }
-
-  .cierre {
-    margin-top: clamp(56px, 6vw, 88px);
-  }
-
-  .cierre div {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px 32px;
-  }
-
-  .cierre p {
-    max-width: 34ch;
-  }
-
-  @media (max-width: 760px) {
-    .eje > span:empty {
+    .panel {
       display: none;
     }
 
-    .frase {
-      font-size: 6vw;
-      line-height: 1.25;
+    .item {
+      color: var(--ink);
+      font-weight: 500;
+      padding-top: 14px;
+      pointer-events: none;
     }
 
-    .frase :global(.slot) {
-      width: 1.5em;
+    .item__desc {
+      position: static;
+      width: auto;
+      height: auto;
+      clip-path: none;
+      white-space: normal;
+      display: block;
+      max-width: 44ch;
+      color: var(--ink-soft);
+      line-height: 1.45;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .indice {
+      margin-top: 48px;
+      row-gap: 40px;
     }
 
-    .lista {
-      grid-template-columns: 1fr;
+    .grupo {
+      grid-column: 1 / -1;
     }
 
-    .cierre .btn {
-      width: 100%;
+    .grupo h3 {
+      margin-bottom: 0.4em;
     }
   }
 </style>

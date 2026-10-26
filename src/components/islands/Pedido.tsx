@@ -1,7 +1,7 @@
 import { useId, useState, type FormEvent } from 'react';
 import './Pedido.css';
 
-type Props = { email: string; whatsapp: string };
+type Props = { email: string; whatsapp: string; piezas: string[]; destinos: string[] };
 
 const ESPACIOS = [
   'Casa o departamento',
@@ -22,16 +22,30 @@ function alternar(lista: string[], valor: string) {
   return lista.includes(valor) ? lista.filter((v) => v !== valor) : [...lista, valor];
 }
 
-export default function Pedido({ email, whatsapp }: Props) {
+export default function Pedido({ email, whatsapp, piezas, destinos }: Props) {
   const [espacio, setEspacio] = useState<string | null>(null);
   const [necesidades, setNecesidades] = useState<string[]>([]);
+  const [inventario, setInventario] = useState<Record<string, string>>({});
   const [nombre, setNombre] = useState('');
   const [nota, setNota] = useState('');
   const id = useId();
 
+  const marcar = (pieza: string, destino: string) =>
+    setInventario((inv) => {
+      const sig = { ...inv };
+      if (sig[pieza] === destino) delete sig[pieza];
+      else sig[pieza] = destino;
+      return sig;
+    });
+
+  const porDestino = destinos
+    .map((d) => ({ destino: d, piezas: piezas.filter((p) => inventario[p] === d) }))
+    .filter((g) => g.piezas.length > 0);
+
   const renglones = [
     espacio && `Espacio: ${espacio}`,
     ...necesidades.map((n) => `Necesito: ${n}`),
+    ...porDestino.map((g) => `${g.destino}: ${g.piezas.join(', ')}`),
     nota.trim() && `Nota: ${nota.trim()}`,
   ].filter(Boolean) as string[];
 
@@ -48,22 +62,26 @@ export default function Pedido({ email, whatsapp }: Props) {
     window.location.href = mailto;
   };
 
-  const resumen = [espacio, ...necesidades].filter(Boolean).join(' · ');
+  const marcadas = Object.keys(inventario).length;
+  const resumen = [
+    espacio,
+    ...necesidades,
+    marcadas > 0 && `${marcadas} ${marcadas === 1 ? 'pieza' : 'piezas'} en el inventario`,
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   return (
-    <form className="cupon" onSubmit={enviar} aria-labelledby={`${id}-t`}>
-      <div className="cupon__izq">
-        <h2 id={`${id}-t`}>
-          Recortá y mandanos
-          <br />
-          tu pedido
-        </h2>
+    <form className="pedido" onSubmit={enviar} aria-labelledby="contacto-t">
+      <div className="pedido__intro">
+        <h2 id="contacto-t">Armá tu pedido</h2>
         <p>
-          Elegí qué espacio es y qué necesitás. Te respondemos en dos días hábiles para coordinar una visita.
+          Contanos qué espacio es, qué necesitás y qué querés hacer con lo que ya tenés. Lo mandás por email o
+          WhatsApp y te respondemos en dos días hábiles.
         </p>
       </div>
 
-      <div className="cupon__der">
+      <div className="pedido__campos">
         <fieldset>
           <legend>¿Qué espacio?</legend>
           <div className="chips">
@@ -98,40 +116,65 @@ export default function Pedido({ email, whatsapp }: Props) {
           </div>
         </fieldset>
 
-        <label className="sr-only" htmlFor={`${id}-nombre`}>
-          Tu nombre
-        </label>
-        <input
-          id={`${id}-nombre`}
-          className="campo"
-          type="text"
-          autoComplete="name"
-          placeholder="Tu nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        />
-        <label className="sr-only" htmlFor={`${id}-nota`}>
-          Contanos en una línea
-        </label>
-        <input
-          id={`${id}-nota`}
-          className="campo"
-          type="text"
-          placeholder="¿Qué te gustaría cambiar?"
-          value={nota}
-          onChange={(e) => setNota(e.target.value)}
-        />
+        <fieldset className="inventario">
+          <legend>Tu inventario</legend>
+          <p className="inventario__ayuda">Marcá qué hacemos con cada cosa que ya tenés. Podés dejar filas sin marcar.</p>
+          <ul>
+            {piezas.map((p) => (
+              <li key={p} className="pieza">
+                <span className="pieza__nombre" id={`${id}-${p}`}>
+                  {p}
+                </span>
+                <div className="pieza__destinos" role="group" aria-labelledby={`${id}-${p}`}>
+                  {destinos.map((d) => (
+                    <button
+                      type="button"
+                      key={d}
+                      className="destino"
+                      aria-pressed={inventario[p] === d}
+                      onClick={() => marcar(p, d)}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
 
-        <p className="cupon__resumen" aria-live="polite">
-          {resumen ? `Tu pedido: ${resumen}` : 'Tu pedido todavía está vacío.'}
+        <div className="pedido__datos">
+          <label htmlFor={`${id}-nombre`}>Tu nombre</label>
+          <input
+            id={`${id}-nombre`}
+            className="campo"
+            type="text"
+            autoComplete="name"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+          <label htmlFor={`${id}-nota`}>¿Qué te gustaría cambiar?</label>
+          <input
+            id={`${id}-nota`}
+            className="campo"
+            type="text"
+            value={nota}
+            onChange={(e) => setNota(e.target.value)}
+          />
+        </div>
+
+        <p className="pedido__resumen" aria-live="polite">
+          {resumen ? `Tu pedido: ${resumen}.` : 'Tu pedido todavía está vacío. Podés mandarlo igual.'}
         </p>
 
-        <button type="submit" className="enviar">
-          Enviar por email
-        </button>
-        <a className="enviar enviar--wa" href={wa} target="_blank" rel="noopener noreferrer">
-          Enviar por WhatsApp
-        </a>
+        <div className="pedido__envio">
+          <button type="submit" className="btn">
+            Enviar por email
+          </button>
+          <a className="btn btn--claro" href={wa} target="_blank" rel="noopener noreferrer">
+            Enviar por WhatsApp
+          </a>
+        </div>
       </div>
     </form>
   );

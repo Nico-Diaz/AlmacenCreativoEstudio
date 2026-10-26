@@ -1,27 +1,120 @@
 ---
+import { Image } from 'astro:assets';
 import Pedido from './islands/Pedido';
-import { contacto } from '../data/contenido';
+import acequia from '../assets/archivo/acequia.jpg';
+import { contacto, piezas, destinos } from '../data/contenido';
+
+const wa = `https://wa.me/${contacto.whatsapp}`;
 ---
 
-<section class="contacto wrap" id="contacto">
-  <div class="marco">
-    <Pedido client:visible email={contacto.email} whatsapp={contacto.whatsapp} />
+<section class="contacto wrap" id="contacto" aria-labelledby="contacto-t">
+  <Pedido client:visible email={contacto.email} whatsapp={contacto.whatsapp} piezas={piezas} destinos={destinos} />
+
+  <div class="banda grid">
+    <p class="frase">Escribinos por tu casa, tu local, tu vidriera o tu evento.</p>
+    <div class="retrato">
+      <Image
+        src={acequia}
+        alt="Acequia de Mendoza con piedras, una baranda negra y enredadera"
+        widths={[200, 340]}
+        sizes="160px"
+        loading="lazy"
+      />
+    </div>
+    <div class="directo">
+      <p class="directo__q">¿Preferís escribir directo?</p>
+      <ul>
+        <li><a class="link" href={`mailto:${contacto.email}`}>{contacto.email}</a></li>
+        <li>
+          <a class="link" href={wa} target="_blank" rel="noopener noreferrer">WhatsApp {contacto.telefonos[0]}</a>
+        </li>
+      </ul>
+      <p class="nota">{contacto.ciudad}. {contacto.horario}. Respondemos en dos días hábiles.</p>
+    </div>
   </div>
 </section>
 
 <style>
   .contacto {
-    padding-block: clamp(80px, 9vw, 120px);
+    padding-bottom: 120px;
   }
 
-  .marco {
-    width: min(100%, calc(10 / 12 * 100% + 2 * var(--col-gap)));
-    margin-inline: auto;
+  .banda {
+    margin-top: 160px;
+    align-items: start;
+  }
+
+  .frase {
+    grid-column: 1 / span 5;
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.625rem, 1rem + 1.4vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .retrato {
+    grid-column: 8 / span 2;
+    max-width: 170px;
+  }
+
+  .retrato :global(img) {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .directo {
+    grid-column: 10 / -1;
+    display: grid;
+    gap: 20px;
+  }
+
+  .directo__q {
+    font-weight: 500;
+  }
+
+  .directo ul {
+    display: grid;
+    gap: 6px;
+  }
+
+  .directo a {
+    display: inline-block;
+    padding-block: 4px;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 960px) {
+    .frase {
+      grid-column: 1 / -1;
+      margin-bottom: 40px;
+    }
+
+    .retrato {
+      grid-column: 1 / span 3;
+    }
+
+    .directo {
+      grid-column: 4 / -1;
+    }
   }
 
   @media (max-width: 760px) {
-    .contacto {
-      padding-inline: 12px;
+    .banda {
+      margin-top: 112px;
+    }
+
+    .frase {
+      font-size: var(--step-lead);
+    }
+
+    .retrato {
+      grid-column: 1 / span 4;
+      max-width: 96px;
+    }
+
+    .directo {
+      grid-column: 5 / -1;
     }
   }
 </style>

@@ -21,10 +21,9 @@ body {
   margin: 0;
   background: var(--ground);
   color: var(--ink);
-  font-family: var(--font);
+  font-family: var(--sans);
   font-size: var(--step-body);
   line-height: 1.5;
-  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overflow-x: clip;
@@ -50,16 +49,22 @@ ol {
 }
 
 h1,
-h2,
-h3 {
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+h2 {
+  font-family: var(--serif);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1;
   text-wrap: balance;
 }
 
 h2 {
   font-size: var(--step-head);
+}
+
+h3 {
+  font-size: var(--step-body);
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 img {
@@ -71,12 +76,12 @@ img {
 a {
   color: inherit;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 0.22em;
 }
 
 ::selection {
   background: var(--ink);
-  color: var(--ground-soft);
+  color: var(--paper);
 }
 
 :focus-visible {
@@ -97,17 +102,16 @@ a {
   padding-inline: var(--gutter);
 }
 
-/* Columna izquierda hasta el eje del 42%, contenido desde el eje. */
-.eje {
-  display: grid;
-  grid-template-columns: calc(var(--axis) - var(--gutter) - var(--col-gap)) minmax(0, 1fr);
-  column-gap: var(--col-gap);
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--col-gap);
+}
+
+.nota {
+  font-size: var(--step-small);
+  line-height: 1.45;
+  color: var(--ink-soft);
 }
 
 .btn {
@@ -120,12 +124,12 @@ a {
   border-radius: 0;
   background: var(--ink);
   color: var(--paper);
-  font: 500 var(--step-body) / 1 var(--font);
+  font: 500 var(--step-body) / 1 var(--sans);
   text-decoration: none;
   cursor: pointer;
   transition:
     transform 160ms var(--ease-out),
-    background-color 200ms ease;
+    background-color 180ms ease;
   user-select: none;
 }
 
@@ -140,23 +144,12 @@ a {
 }
 
 .link {
-  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
-  transition: text-decoration-color 200ms ease;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  transition: text-decoration-color 180ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .link:hover {
     text-decoration-color: currentColor;
-  }
-}
-
-@media (max-width: 960px) {
-  .eje {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 20px;
-  }
-
-  .eje > span:empty {
-    display: none;
   }
 }

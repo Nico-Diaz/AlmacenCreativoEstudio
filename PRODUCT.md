@@ -41,13 +41,15 @@ Primer contacto por email o WhatsApp; luego visita, propuesta, proyecto y obra. 
 ## Brand Commitments
 
 - Nombre: Almacen Creativo.
-- Colores fijados por la usuaria: fondo `#AFC8DE`, texto y acentos `#8C2E21`; se pueden sumar colores que combinen.
+- Colores de la marca: celeste `#AFC8DE` y rojo `#8C2E21`. Desde el rediseño minimalista (octubre 2026) el fondo es un papel frío claro `#F1F4F7`; el rojo es la tinta del texto y las acciones, y el celeste queda para bloques (la sección Proceso, la planta de Quiénes somos).
+- Tipografía: Zodiak (titulares, serif fina) y Hanken Grotesk (texto), servidas desde `public/fonts/`.
 - Idioma: español rioplatense, trato de "vos".
 
 ## Evidence on Hand
 
 - Proyectos reales: stand de Altiér beauty en feria (3 fotos) y Stand Trombetta para Óptica Luis Trombetta en el torneo Máximo Navesi (render, croquis y configuraciones, extraídos del entregable en PDF). Originales en `material/` (fuera de `public/`, no se publican).
-- Todavía usan fotos temporales de Unsplash: las fotitos de "casas" y "locales" en Qué hacemos.
+- Todavía usan fotos temporales de Unsplash: la sala (copia chica del hero) y el café (primer paso de Proceso).
+- Imágenes de archivos abiertos, con crédito en el footer (`creditos` en `src/data/contenido.ts`): almacén de ramos generales, grabados de Sheraton y de la Encyclopédie, taller de carpintería, acequia y cordillera. Muestran el mundo del oficio, nunca se presentan como trabajos del estudio.
 - No hay testimonios, prensa, clientes ni cifras: no se inventan.
 
 ## Product Principles

@@ -1,49 +1,52 @@
 @font-face {
-  font-family: 'Switzer';
-  src: url('/fonts/switzer-400.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'Zodiak';
+  src: url('/fonts/zodiak-100.woff2') format('woff2');
+  font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Switzer';
-  src: url('/fonts/switzer-500.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'Zodiak';
+  src: url('/fonts/zodiak-300.woff2') format('woff2');
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Switzer';
-  src: url('/fonts/switzer-600.woff2') format('woff2');
-  font-weight: 600;
+  font-family: 'Hanken Grotesk';
+  src: url('/fonts/hanken-grotesk.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --ground: #afc8de;
-  --ground-soft: #c9dae9;
+  /* Fondo papel frío sacado del celeste de la marca; el rojo es la tinta. */
+  --ground: #f1f4f7;
+  --tone: #e3eaf1;
+  --field: #afc8de;
   --ink: #8c2e21;
   --ink-deep: #5e1d15;
-  --ink-soft: #3c5266;
-  --paper: #e8e6e3;
+  --ink-soft: #44596b;
+  --paper: #f6f8fa;
 
-  --font: 'Switzer', system-ui, sans-serif;
+  --serif: 'Zodiak', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
 
+  /* Cinco tamaños en toda la página. */
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
-  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
-  --step-mid: clamp(1.625rem, 1rem + 1.6vw, 2.5rem);
-  --step-display: clamp(3rem, 1rem + 6vw, 7.5rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --step-lead: clamp(1.25rem, 1.05rem + 0.6vw, 1.625rem);
+  --step-head: clamp(2.5rem, 1.6rem + 3vw, 4.25rem);
+  --step-display: clamp(3.5rem, 0.5rem + 10vw, 11rem);
 
-  --gutter: clamp(20px, 3.3vw, 48px);
-  --col-gap: clamp(16px, 2vw, 32px);
-  --axis: 42vw;
-  --section-gap: clamp(96px, 11vw, 176px);
+  --gutter: clamp(20px, 5vw, 80px);
+  --col-gap: clamp(12px, 1.6vw, 24px);
+  --section-gap: clamp(112px, 13vw, 220px);
 
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
 }

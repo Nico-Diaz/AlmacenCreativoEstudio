@@ -7,63 +7,86 @@ function reveal() {
     });
   });
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-in');
-          io.unobserve(e.target);
-        }
-      }
-    },
-    { rootMargin: '0px 0px -10% 0px' },
-  );
-  targets.forEach((el) => io.observe(el));
-}
-
-function obras() {
-  const root = document.querySelector<HTMLElement>('[data-obras]');
-  if (!root) return;
-  const filas = Array.from(root.querySelectorAll<HTMLElement>('[data-fila]'));
-  const fotos = Array.from(root.querySelectorAll<HTMLElement>('[data-foto]'));
-  const rescate = root.querySelector<HTMLElement>('[data-rescate]');
-  const n = fotos.length;
-  let actual = -1;
-  let proyectoActual = -1;
-
-  const mostrar = (idx: number) => {
-    if (idx === actual) return;
-    actual = idx;
-    fotos.forEach((f, i) => {
-      f.classList.toggle('is-on', i === idx);
-      f.classList.toggle('is-past', i < idx);
-    });
-    const p = Number(fotos[idx].dataset.proyecto ?? 0);
-    if (p === proyectoActual) return;
-    proyectoActual = p;
-    filas.forEach((f, i) => f.classList.toggle('is-on', i === p));
-    if (rescate) rescate.textContent = filas[p].dataset.rescateTexto ?? '';
-  };
-
+  // Se abre todo lo que ya asomó por el borde inferior, también lo que un salto de scroll dejó atrás.
+  // Con un umbral más alto, lo que está al final de la página podría no abrirse nunca.
+  let pendientes = Array.from(targets);
   let ticking = false;
-  const update = () => {
+  const revisar = () => {
     ticking = false;
-    const r = root.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const t = Math.max(0, Math.min(0.999, -r.top / Math.max(1, r.height - vh)));
-    const idx = Math.floor(t * n);
-    mostrar(idx);
-  };
-  const onScroll = () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
+    const limite = window.innerHeight - 24;
+    pendientes = pendientes.filter((el) => {
+      if (el.getBoundingClientRect().top < limite) {
+        el.classList.add('is-in');
+        return false;
+      }
+      return true;
+    });
+    if (pendientes.length === 0) {
+      window.removeEventListener('scroll', alScroll);
+      window.removeEventListener('resize', alScroll);
     }
   };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  update();
+  const alScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(revisar);
+    }
+  };
+  window.addEventListener('scroll', alScroll, { passive: true });
+  window.addEventListener('resize', alScroll);
+  revisar();
+}
+
+// Índice de servicios: el nombre que se señala muestra su descripción en la columna libre.
+function indice() {
+  const root = document.querySelector<HTMLElement>('[data-indice]');
+  const panel = root?.querySelector<HTMLElement>('[data-panel]');
+  const nombre = panel?.querySelector<HTMLElement>('[data-panel-nombre]');
+  const desc = panel?.querySelector<HTMLElement>('[data-panel-desc]');
+  if (!root || !panel || !nombre || !desc) return;
+
+  const items = Array.from(root.querySelectorAll<HTMLButtonElement>('.item'));
+  let actual: HTMLButtonElement | null = null;
+  let timer = 0;
+
+  const mostrar = (item: HTMLButtonElement) => {
+    if (item === actual) return;
+    actual?.classList.remove('is-on');
+    item.classList.add('is-on');
+    actual = item;
+    window.clearTimeout(timer);
+    panel.classList.add('is-swapping');
+    timer = window.setTimeout(() => {
+      nombre.textContent = item.dataset.nombre ?? '';
+      desc.textContent = item.dataset.desc ?? '';
+      panel.classList.remove('is-swapping');
+    }, 140);
+  };
+
+  items.forEach((item) => {
+    item.addEventListener('pointerenter', () => mostrar(item));
+    item.addEventListener('focus', () => mostrar(item));
+    item.addEventListener('click', () => mostrar(item));
+  });
+  if (items[0]) {
+    items[0].classList.add('is-on');
+    actual = items[0];
+  }
+}
+
+// Menú de celular: se cierra al elegir una sección o con Escape.
+function menu() {
+  const det = document.querySelector<HTMLDetailsElement>('details.menu');
+  if (!det) return;
+  det.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => det.removeAttribute('open')));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && det.open) {
+      det.removeAttribute('open');
+      det.querySelector('summary')?.focus();
+    }
+  });
 }
 
 reveal();
-obras();
+indice();
+menu();

@@ -1,8 +1,8 @@
 .lineas .linea {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
 }
 
 .lineas [data-line] {
@@ -10,25 +10,37 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Carga: el titular sube línea por línea y la foto alta se abre como un obturador. */
   .js .lineas [data-line] {
     transform: translateY(105%);
     animation: linea-sube 900ms var(--ease-out) forwards;
-    animation-delay: calc(var(--i, 0) * 110ms + 150ms);
+    animation-delay: calc(var(--i, 0) * 100ms + 250ms);
   }
 
   .js [data-after-lines] {
     opacity: 0;
     transform: translateY(12px);
-    animation: aparece 600ms var(--ease-out) 520ms forwards;
+    animation: aparece 700ms var(--ease-out) 560ms forwards;
   }
 
+  .js [data-shutter] {
+    clip-path: inset(100% 0 0 0);
+    animation: obturador 1100ms var(--ease-in-out) 80ms forwards;
+  }
+
+  .js [data-shutter] img {
+    transform: scale(1.12);
+    animation: asienta 1400ms var(--ease-out) 80ms forwards;
+  }
+
+  /* Al entrar en pantalla: las partes de cada bloque llegan en orden de lectura. */
   .js [data-reveal] > * {
     opacity: 0;
     transform: translateY(24px);
     transition:
       opacity 700ms var(--ease-out),
       transform 900ms var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 80ms);
+    transition-delay: calc(var(--i, 0) * 70ms);
   }
 
   .js [data-reveal].is-in > * {
@@ -36,13 +48,23 @@
     transform: none;
   }
 
+  /* Las fotos se abren desde abajo y se asientan desde una escala apenas mayor. */
   .js [data-reveal-img] {
     clip-path: inset(0 0 100% 0);
     transition: clip-path 1000ms var(--ease-in-out);
   }
 
+  .js [data-reveal-img] img {
+    transform: scale(1.08);
+    transition: transform 1400ms var(--ease-out);
+  }
+
   .js [data-reveal-img].is-in {
     clip-path: inset(0);
+  }
+
+  .js [data-reveal-img].is-in img {
+    transform: none;
   }
 }
 
@@ -55,6 +77,18 @@
 @keyframes aparece {
   to {
     opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes obturador {
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes asienta {
+  to {
     transform: none;
   }
 }

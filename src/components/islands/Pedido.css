@@ -1,71 +1,38 @@
-.cupon {
-  --notch: 28px;
-  --seam: 46%;
-  --card-light: color-mix(in srgb, var(--ground) 14%, var(--ink));
-  position: relative;
+.pedido {
   display: grid;
-  grid-template-columns: var(--seam) 1fr;
-  min-height: 420px;
-  background: var(--ink);
-  color: var(--ground);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  align-items: start;
 }
 
-.cupon::before,
-.cupon::after {
-  content: '';
-  position: absolute;
-  left: var(--seam);
-  width: var(--notch);
-  height: var(--notch);
-  border-radius: 50%;
-  background: var(--ground);
-  transform: translateX(-50%);
-}
-
-.cupon::before {
-  top: calc(var(--notch) / -2);
-}
-
-.cupon::after {
-  bottom: calc(var(--notch) / -2);
-}
-
-.cupon__izq {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 32px;
-  padding: 48px;
-}
-
-.cupon__izq h2 {
-  font-size: var(--step-mid);
-  line-height: 1;
-}
-
-.cupon__izq p {
-  max-width: 32ch;
-  font-size: var(--step-body);
-}
-
-.cupon__der {
+.pedido__intro {
+  grid-column: 1 / span 4;
+  position: sticky;
+  top: 32px;
   display: grid;
-  align-content: start;
-  gap: 10px;
-  padding: 40px 48px 40px 44px;
-  border-left: 5px dotted var(--ground);
+  gap: 24px;
 }
 
-.cupon fieldset {
+.pedido__intro p {
+  max-width: 34ch;
+}
+
+.pedido__campos {
+  grid-column: 6 / -1;
+  display: grid;
+  gap: 40px;
+}
+
+.pedido fieldset {
   border: 0;
-  margin: 0 0 12px;
+  margin: 0;
   padding: 0;
+  min-width: 0;
 }
 
-.cupon legend {
+.pedido legend {
   padding: 0;
-  margin-bottom: 10px;
-  font-size: var(--step-body);
+  margin-bottom: 14px;
   font-weight: 500;
 }
 
@@ -75,34 +42,79 @@
   gap: 8px;
 }
 
-.chip {
+.chip,
+.destino {
   min-height: 44px;
   padding: 0 16px;
   border: 0;
   border-radius: 0;
-  background: var(--card-light);
-  color: var(--paper);
-  font: 400 var(--step-body) / 1 var(--font);
+  background: var(--tone);
+  color: var(--ink);
+  font: 400 var(--step-body) / 1 var(--sans);
   cursor: pointer;
   transition:
     transform 160ms var(--ease-out),
-    background-color 200ms ease,
-    color 200ms ease;
+    background-color 180ms ease,
+    color 180ms ease;
 }
 
-.chip:active {
+.chip:active,
+.destino:active {
   transform: scale(0.97);
 }
 
-.chip[aria-pressed='true'] {
-  background: var(--paper);
-  color: var(--ink);
+.chip[aria-pressed='true'],
+.destino[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .chip[aria-pressed='false']:hover {
-    background: var(--ink-deep);
+  .chip[aria-pressed='false']:hover,
+  .destino[aria-pressed='false']:hover {
+    background: color-mix(in srgb, var(--field) 55%, var(--tone));
   }
+}
+
+.inventario__ayuda {
+  margin-bottom: 16px;
+  color: var(--ink-soft);
+}
+
+.inventario ul {
+  display: grid;
+  gap: 6px;
+}
+
+.pieza {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.pieza__destinos {
+  display: flex;
+  gap: 4px;
+}
+
+.destino {
+  min-width: 104px;
+  padding: 0 12px;
+  font-size: var(--step-small);
+}
+
+.pedido__datos {
+  display: grid;
+  gap: 8px;
+}
+
+.pedido__datos label {
+  font-weight: 500;
+}
+
+.pedido__datos label:not(:first-child) {
+  margin-top: 16px;
 }
 
 .campo {
@@ -110,83 +122,72 @@
   padding: 0 16px;
   border: 0;
   border-radius: 0;
-  background: var(--card-light);
-  color: var(--paper);
-  font: 400 var(--step-body) / 1.4 var(--font);
-  caret-color: var(--paper);
-}
-
-.campo::placeholder {
-  color: color-mix(in srgb, var(--paper) 88%, var(--ink));
-}
-
-.campo:focus-visible,
-.chip:focus-visible,
-.enviar:focus-visible {
-  outline: 2px solid var(--paper);
-  outline-offset: 2px;
-}
-
-.cupon__resumen {
-  margin: 6px 0 4px;
-  font-size: var(--step-body);
-  color: var(--paper);
-}
-
-.enviar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  border: 0;
-  border-radius: 0;
-  background: var(--ink-deep);
-  color: var(--paper);
-  font: 500 var(--step-body) / 1 var(--font);
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    transform 160ms var(--ease-out),
-    background-color 200ms ease;
-}
-
-.enviar:active {
-  transform: scale(0.98);
-}
-
-.enviar--wa {
-  background: var(--paper);
+  border-bottom: 2px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  background: var(--tone);
   color: var(--ink);
+  font: 400 var(--step-body) / 1.4 var(--sans);
+  caret-color: var(--ink);
+  transition: border-color 180ms ease;
+}
+
+.campo:focus-visible {
+  outline: none;
+  border-bottom-color: var(--ink);
+}
+
+.pedido__resumen {
+  color: var(--ink-soft);
+}
+
+.pedido__envio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn--claro {
+  background: var(--field);
+  color: var(--ink-deep);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .enviar:hover {
-    background: #4a160f;
-  }
-
-  .enviar--wa:hover {
-    background: var(--ground-soft);
+  .btn--claro:hover {
+    background: color-mix(in srgb, var(--field) 80%, var(--ink-soft));
+    color: var(--ink-deep);
   }
 }
 
-@media (max-width: 860px) {
-  .cupon {
-    grid-template-columns: 1fr;
-    min-height: 0;
+@media (max-width: 960px) {
+  .pedido__intro {
+    grid-column: 1 / -1;
+    position: static;
+    margin-bottom: 40px;
   }
 
-  .cupon::before,
-  .cupon::after {
-    display: none;
+  .pedido__campos {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .pieza {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .cupon__izq {
-    padding: 32px 24px;
+  .pieza__destinos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .cupon__der {
-    padding: 32px 24px;
-    border-left: 0;
-    border-top: 5px dotted var(--ground);
+  .destino {
+    min-width: 0;
+  }
+
+  .pieza + .pieza {
+    margin-top: 10px;
+  }
+
+  .pedido__envio .btn {
+    width: 100%;
   }
 }

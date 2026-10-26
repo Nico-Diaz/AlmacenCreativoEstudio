@@ -1,19 +1,57 @@
 ---
+import { Image } from 'astro:assets';
 import { pasos } from '../data/contenido';
+import local from '../assets/fotos/esquina-a.jpg';
+import sala from '../assets/archivo/sheraton-sala.jpg';
+import layetier from '../assets/archivo/layetier.jpg';
+import taller from '../assets/archivo/taller.jpg';
+
+const fotos = [
+  {
+    src: local,
+    alt: 'Café con una mesa larga de madera, dos tazas y una ventana a la calle',
+    nota: 'El espacio como está.',
+  },
+  {
+    src: sala,
+    alt: 'Grabado de 1793 con la planta de una sala y sus cuatro paredes desplegadas alrededor',
+    nota: 'Planta y alzados de una sala, Thomas Sheraton, 1793.',
+  },
+  {
+    src: layetier,
+    alt: 'Grabado de un taller de carpintería con bancos de trabajo y herramientas dibujados a escala',
+    nota: 'Lámina de taller de la Encyclopédie.',
+  },
+  {
+    src: taller,
+    alt: 'Banco de carpintero con herramientas colgadas en la pared y tablas sobre la mesa',
+    nota: 'Un taller de carpintería.',
+  },
+];
 ---
 
-<section class="proceso" id="proceso" aria-labelledby="proceso-t">
-  <div class="wrap">
-    <div class="eje">
-      <span></span>
-      <h2 id="proceso-t">Cómo trabajamos</h2>
-    </div>
-    <ol class="escalera grid" data-reveal>
+<section class="proceso wrap" id="proceso" aria-labelledby="proceso-t">
+  <div class="diagonal grid">
+    <h2 id="proceso-t">Cómo trabajamos</h2>
+    <ol class="pasos">
       {
         pasos.map((p, i) => (
-          <li class="paso" style={`--col:${1 + i * 2};--i:${i}`}>
-            <p class="linea">{p.linea}</p>
-            <p class="detalle">{p.detalle}</p>
+          <li class={`paso paso--${i + 1}`}>
+            <figure>
+              <div class="paso__marco" data-reveal-img>
+                <Image
+                  src={fotos[i].src}
+                  alt={fotos[i].alt}
+                  widths={[500, 900, 1300]}
+                  sizes="(max-width: 760px) 90vw, 40vw"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="nota">{fotos[i].nota}</figcaption>
+            </figure>
+            <p class="paso__texto">
+              <strong>{p.linea}</strong> {p.detalle}
+            </p>
           </li>
         ))
       }
@@ -23,61 +61,184 @@ import { pasos } from '../data/contenido';
 
 <style>
   .proceso {
-    background: var(--ink);
-    color: var(--ground);
+    background: var(--field);
+    color: var(--ink-deep);
     padding-block: var(--section-gap);
   }
 
-  .escalera {
-    margin-top: clamp(56px, 7vw, 104px);
-    row-gap: 56px;
+  .proceso .nota {
+    color: var(--ink-deep);
+  }
+
+  .diagonal {
+    align-items: start;
+  }
+
+  h2 {
+    grid-column: 9 / -1;
+    grid-row: 1;
+  }
+
+  .pasos {
+    display: contents;
   }
 
   .paso {
-    grid-column: var(--col) / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
   }
 
-  .linea {
-    font-size: var(--step-head);
+  .paso figure {
+    min-width: 0;
+  }
+
+  .paso__marco {
+    overflow: hidden;
+  }
+
+  .paso :global(img) {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .paso figcaption {
+    margin-top: 10px;
+  }
+
+  .paso__texto {
+    max-width: 36ch;
+  }
+
+  .paso__texto strong {
     font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    text-wrap: balance;
   }
 
-  .paso:last-child .linea {
-    color: var(--paper);
+  /* Primero: retrato a la izquierda, texto a su derecha. */
+  .paso--1 {
+    grid-column: 1 / span 8;
+    grid-row: 1 / span 2;
   }
 
-  .detalle {
-    margin-top: 12px;
-    max-width: 34ch;
-    font-size: var(--step-body);
+  .paso--1 figure {
+    grid-column: 1 / span 4;
   }
 
-  @media (max-width: 760px) {
-    .eje > span:empty {
-      display: none;
+  .paso--1 .paso__texto {
+    grid-column: 5 / span 4;
+    padding-top: 4px;
+  }
+
+  .paso--1 :global(img) {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* Segundo: cuadrado más abajo, texto a su derecha. */
+  .paso--2 {
+    grid-column: 6 / -1;
+    grid-row: 2;
+    margin-top: clamp(120px, 15vw, 220px);
+  }
+
+  .paso--2 figure {
+    grid-column: 1 / span 3;
+  }
+
+  .paso--2 .paso__texto {
+    grid-column: 4 / span 4;
+  }
+
+  .paso--2 :global(img) {
+    aspect-ratio: 1;
+    object-position: 50% 45%;
+  }
+
+  /* Tercero: apaisado a la derecha, texto a su izquierda. */
+  .paso--3 {
+    grid-column: 3 / -1;
+    grid-row: 3;
+    margin-top: clamp(80px, 12vw, 180px);
+  }
+
+  .paso--3 .paso__texto {
+    grid-column: 1 / span 4;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .paso--3 figure {
+    grid-column: 6 / span 5;
+    grid-row: 1;
+  }
+
+  .paso--3 :global(img) {
+    aspect-ratio: 16 / 10;
+    object-position: 50% 18%;
+  }
+
+  /* Cuarto: vuelve hacia la izquierda y cierra la diagonal. */
+  .paso--4 {
+    grid-column: 2 / span 8;
+    grid-row: 4;
+    margin-top: clamp(64px, 9vw, 140px);
+  }
+
+  .paso--4 figure {
+    grid-column: 1 / span 4;
+  }
+
+  .paso--4 .paso__texto {
+    grid-column: 5 / span 4;
+  }
+
+  .paso--4 :global(img) {
+    aspect-ratio: 4 / 5;
+    object-position: 60% 50%;
+  }
+
+  @media (max-width: 960px) {
+    h2 {
+      grid-column: 1 / -1;
+      margin-bottom: 40px;
     }
 
-    .escalera {
-      display: grid;
-      grid-template-columns: 1fr;
-      row-gap: 40px;
+    .paso,
+    .paso--1,
+    .paso--2,
+    .paso--3,
+    .paso--4 {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      display: block;
+      margin-top: 0;
+      margin-bottom: 56px;
     }
 
-    .paso {
-      grid-column: 1;
-      padding-left: calc(var(--i, 0) * 6vw);
+    .paso:last-child {
+      margin-bottom: 0;
     }
 
-    .linea {
-      font-size: 8.4vw;
-      white-space: normal;
+    .paso figure {
+      width: 100%;
     }
 
-    .detalle {
-      font-size: var(--step-body);
+    .paso--2 figure,
+    .paso--4 figure {
+      width: 62%;
+      margin-left: auto;
+    }
+
+    .paso--3 figure {
+      width: 78%;
+    }
+
+    .paso--2 .paso__texto,
+    .paso--4 .paso__texto {
+      margin-left: 38%;
+    }
+
+    .paso__texto {
+      margin-top: 16px;
     }
   }
 </style>

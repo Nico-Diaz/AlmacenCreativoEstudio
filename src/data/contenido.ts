@@ -139,6 +139,50 @@ export const pasos = [
   },
 ];
 
+// Piezas para el inventario del pedido: el cliente marca qué hace con cada una.
+export const piezas = ['Sillones', 'Mesas', 'Sillas', 'Estanterías', 'Lámparas', 'Cortinas y textiles'];
+export const destinos = ['Se queda', 'Restaurar', 'Se va'];
+
+// Imágenes de archivos abiertos: muestran el mundo del oficio, no trabajos del estudio.
+export const creditos = [
+  {
+    titulo: 'Almacén de ramos generales',
+    autor: 'Museo y Archivo Histórico Municipal Don Santos Tosticarelli',
+    licencia: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:MAHM_-_Sector_%22Trabajos_y_costumbres%22_-_Almac%C3%A9n_de_Ramos_Generales.tif',
+  },
+  {
+    titulo: 'Plan and Section of a Drawing Room (1793)',
+    autor: 'Thomas Sheraton, The Met',
+    licencia: 'CC0',
+    url: 'https://www.metmuseum.org/art/collection/search/357159',
+  },
+  {
+    titulo: 'Layetier, lámina de la Encyclopédie',
+    autor: 'Wellcome Collection',
+    licencia: 'CC BY 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Joinery;_a_box-making_workshop,_with_men_at_work_(top),_tool_Wellcome_V0023897.jpg',
+  },
+  {
+    titulo: 'Taller de carpintería, Stará Ľubovňa',
+    autor: 'Georges Jansoone',
+    licencia: 'CC BY 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Spisska_Lubovna_045.jpg',
+  },
+  {
+    titulo: 'Acequias en Mendoza',
+    autor: 'Veronica Johansen',
+    licencia: 'CC BY-SA 3.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Acequias_en_Mendoza_-_panoramio.jpg',
+  },
+  {
+    titulo: 'Cordillera de los Andes, Mendoza',
+    autor: 'María Belén Sica',
+    licencia: 'CC BY-SA 4.0',
+    url: 'https://commons.wikimedia.org/wiki/File:Cordillera_de_los_Andes,_Mendoza.JPG',
+  },
+];
+
 export const preguntas = [
   {
     q: '¿Trabajan solo en Mendoza?',
