@@ -41,15 +41,17 @@ Primer contacto por email o WhatsApp; luego visita, propuesta, proyecto y obra. 
 ## Brand Commitments
 
 - Nombre: Almacen Creativo.
-- Colores de la marca: celeste `#AFC8DE` y rojo `#8C2E21`. Desde el rediseño minimalista (octubre 2026) el fondo es un papel frío claro `#F1F4F7`; el rojo es la tinta del texto y las acciones, y además fondo entero de la franja y de Qué hacemos; el celeste es fondo de Proceso y el celeste pálido `#DCE6EF` de Preguntas. Cada sección declara `data-tema` y la barra fija toma ese color.
-- Tipografía: Zodiak (titulares, serif fina) y Hanken Grotesk (texto), servidas desde `public/fonts/`.
+- Logo: monograma "ac" escrito a mano dentro de un círculo dibujado, rojo `#832F27` sobre celeste `#B3CEE1`. Vectorizado en `src/components/Logo.astro` (toma el color del texto) y en `public/favicon.svg`.
+- Paleta de la guía de marca: marrón `#5F2E20`, oliva `#937B21`, bordó `#7A113A` y arena `#EFD099`, más el rojo y el celeste del logo. Fondo general papel `#F8EDD7` (arena aclarada). Cada sección declara `data-tema` (papel, arena, marrón, bordó, celeste) y la barra fija toma ese color. El oliva no alcanza contraste para texto: solo dibujos.
+- Estilo visual (octubre 2026): "cuaderno de obra". Trazos hechos a mano sobre fotos reales, con notas manuscritas, como quien dibuja una propuesta encima del espacio que existe. Referencia: fotos de obra con muebles dibujados encima y estrellas rojas.
+- Tipografía: Hanken Grotesk muy gruesa y apretada para titulares y texto; Caveat (manuscrita) solo para notas y anotaciones. Servidas desde `public/fonts/`.
 - Idioma: español rioplatense, trato de "vos".
 
 ## Evidence on Hand
 
 - Proyectos reales: stand de Altiér beauty en feria (3 fotos) y Stand Trombetta para Óptica Luis Trombetta en el torneo Máximo Navesi (render, croquis y configuraciones, extraídos del entregable en PDF). Originales en `material/` (fuera de `public/`, no se publican).
-- Todavía usan fotos temporales de Unsplash: la sala (copia chica del hero) y el café (primer paso de Proceso).
-- Imágenes de archivos abiertos, con crédito en el footer (`creditos` en `src/data/contenido.ts`): almacén de ramos generales, grabados de Sheraton y de la Encyclopédie, taller de carpintería, acequia y cordillera. Muestran el mundo del oficio, nunca se presentan como trabajos del estudio.
+- Todavía usan una foto temporal de Unsplash: el café del primer paso de Proceso.
+- Imágenes de archivos abiertos, con crédito en el footer (`creditos` en `src/data/contenido.ts`): almacén de ramos generales, grabados de Sheraton y de la Encyclopédie, taller de carpintería y acequia. Muestran el mundo del oficio, nunca se presentan como trabajos del estudio.
 - No hay testimonios, prensa, clientes ni cifras: no se inventan.
 
 ## Product Principles

@@ -2,22 +2,26 @@
 import { preguntas } from '../data/contenido';
 ---
 
-<section class="faq wrap" id="preguntas" aria-labelledby="preguntas-t" data-tema="palido">
-  <h2 id="preguntas-t">Preguntas frecuentes</h2>
-  <div class="lista grid">
-    <div class="filas" data-reveal>
-      {
-        preguntas.map((p) => (
-          <details class="fila">
-            <summary>
-              <h3>{p.q}</h3>
-              <span class="chevron" aria-hidden="true" />
-            </summary>
-            <p class="respuesta">{p.a}</p>
-          </details>
-        ))
-      }
-    </div>
+<section class="faq wrap" id="preguntas" aria-labelledby="preguntas-t" data-tema="papel">
+  <div class="cabeza">
+    <h2 id="preguntas-t">Preguntas frecuentes</h2>
+    <p class="mano cabeza__nota">lo que más nos preguntan</p>
+  </div>
+  <div class="filas" data-reveal>
+    {
+      preguntas.map((p) => (
+        <details class="fila">
+          <summary>
+            <h3>{p.q}</h3>
+            <svg class="trazos signo" viewBox="0 0 40 40" aria-hidden="true">
+              <path style="--w:4" d="M20 6 C21 16 19 26 20 34" class="signo__v" />
+              <path style="--w:4" d="M6 20 C16 19 26 21 34 20" />
+            </svg>
+          </summary>
+          <p class="respuesta">{p.a}</p>
+        </details>
+      ))
+    }
   </div>
 </section>
 
@@ -26,29 +30,35 @@ import { preguntas } from '../data/contenido';
     padding-block: var(--section-gap);
   }
 
-  h2 {
-    font-size: clamp(2.75rem, 1rem + 4.6vw, 5.5rem);
+  .cabeza {
+    display: grid;
+    gap: 8px;
   }
 
-  .lista {
-    margin-top: 80px;
+  .cabeza__nota {
+    color: var(--rojo);
+    rotate: -2deg;
+    transform-origin: left;
   }
 
   .filas {
-    grid-column: 5 / -1;
     display: grid;
-    gap: 12px;
+    gap: 10px;
+    margin-top: clamp(48px, 6vw, 80px);
+    margin-left: auto;
+    width: min(100%, 860px);
   }
 
   .fila {
-    margin-inline: -24px;
-    padding: 12px 24px;
-    transition: background-color 240ms ease;
+    border-radius: 22px;
+    padding: 10px 24px;
+    background: var(--arena);
+    transition: background-color 260ms ease;
   }
 
   .fila[open] {
-    background: var(--paper);
-    padding-bottom: 28px;
+    background: var(--celeste);
+    padding-bottom: 26px;
   }
 
   summary {
@@ -56,7 +66,7 @@ import { preguntas } from '../data/contenido';
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    min-height: 48px;
+    min-height: 56px;
     cursor: pointer;
     list-style: none;
   }
@@ -67,55 +77,42 @@ import { preguntas } from '../data/contenido';
 
   summary h3 {
     font-size: var(--step-lead);
-    font-weight: 400;
-    line-height: 1.25;
+    font-weight: 700;
   }
 
-  .chevron {
-    position: relative;
+  /* Signo más dibujado: el trazo vertical se va al abrir y queda un menos. */
+  .signo {
     flex: none;
-    width: 16px;
-    height: 16px;
-    transition: transform 260ms var(--ease-out);
+    width: 30px;
+    color: var(--bordo);
+    transition: rotate 400ms var(--ease-out);
   }
 
-  .chevron::before,
-  .chevron::after {
-    content: '';
-    position: absolute;
-    top: 7px;
-    width: 10px;
-    height: 2px;
-    background: currentColor;
+  .signo__v {
+    transition: opacity 200ms ease;
   }
 
-  .chevron::before {
-    left: 0;
-    transform: rotate(45deg);
+  .fila[open] .signo {
+    rotate: 180deg;
   }
 
-  .chevron::after {
-    right: 0;
-    transform: rotate(-45deg);
-  }
-
-  .fila[open] .chevron {
-    transform: rotate(180deg);
+  .fila[open] .signo__v {
+    opacity: 0;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    summary:hover .chevron {
-      transform: translateY(2px);
+    summary:hover .signo {
+      rotate: 90deg;
     }
 
-    .fila[open] summary:hover .chevron {
-      transform: rotate(180deg) translateY(2px);
+    .fila[open] summary:hover .signo {
+      rotate: 180deg;
     }
   }
 
   .respuesta {
-    margin-top: 12px;
-    max-width: 48ch;
+    margin-top: 8px;
+    max-width: 56ch;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -132,26 +129,8 @@ import { preguntas } from '../data/contenido';
   }
 
   @media (max-width: 760px) {
-    h2 {
-      font-size: var(--step-head);
-    }
-
-    .lista {
-      margin-top: 40px;
-    }
-
-    .filas {
-      grid-column: 1 / -1;
-      gap: 4px;
-    }
-
     .fila {
-      margin-inline: calc(-1 * var(--gutter));
-      padding-inline: var(--gutter);
-    }
-
-    summary h3 {
-      font-size: var(--step-lead);
+      padding-inline: 18px;
     }
   }
 </style>

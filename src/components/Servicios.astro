@@ -1,45 +1,93 @@
 ---
 import { servicios, teDamos, herramientas } from '../data/contenido';
 
-const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
-
-const grupos = [
-  { nombre: 'Servicios', items: servicios.map((s) => ({ nombre: s.nombre, desc: s.detalle })) },
-  { nombre: 'Lo que te damos', items: teDamos.map((t) => ({ nombre: t.nombre, desc: `${cap(t.nota)}.` })) },
-  { nombre: 'Herramientas', items: herramientas.map((h) => ({ nombre: h.nombre, desc: `Para ${h.nota}.` })) },
-];
+// Un dibujo por servicio, en una grilla de 100 × 100.
+const iconos: Record<string, string[]> = {
+  'Diseño de interiores': [
+    'M26 46 C26 30 38 26 50 26 C62 26 74 30 74 46',
+    'M18 62 C18 48 26 46 32 46 L68 46 C76 46 82 50 82 62 L82 72 L18 72 Z',
+    'M24 72 L22 84 M76 72 L78 84',
+  ],
+  'Diseño inmobiliario': [
+    'M16 50 L50 20 L84 50',
+    'M26 42 L26 82 L74 82 L74 42',
+    'M44 82 L44 62 L56 62 L56 82',
+  ],
+  'Ambientación de eventos': [
+    'M8 24 C30 46 70 46 92 24',
+    'M22 32 L26 50 L34 37',
+    'M45 40 L50 58 L56 40',
+    'M67 37 L72 54 L79 32',
+  ],
+  'Diseño de vidrieras': [
+    'M14 28 L86 28 L80 42 L20 42 Z',
+    'M22 42 L22 84 L78 84 L78 42',
+    'M34 66 L66 66 M50 66 L50 52',
+  ],
+  Renderizado: [
+    'M50 16 L82 33 L82 67 L50 84 L18 67 L18 33 Z',
+    'M18 33 L50 50 L82 33',
+    'M50 50 L50 84',
+  ],
+  Asesoramiento: [
+    'M16 30 C16 22 22 18 30 18 L72 18 C80 18 86 22 86 30 L86 56 C86 64 80 68 72 68 L46 68 L28 84 L32 68 C22 68 16 64 16 56 Z',
+    'M32 36 L70 36 M32 50 L58 50',
+  ],
+};
 ---
 
-<section class="servicios wrap" id="servicios" aria-labelledby="servicios-t" data-indice data-tema="rojo">
-  <h2 id="servicios-t">Qué hacemos</h2>
+<section class="servicios wrap" id="servicios" aria-labelledby="servicios-t" data-tema="marron">
+  <div class="cabeza">
+    <h2 id="servicios-t">Qué hacemos</h2>
+    <p class="mano cabeza__nota">seis servicios, un mismo criterio</p>
+  </div>
 
-  <div class="indice grid">
+  <ul class="lista">
     {
-      grupos.map((g, gi) => (
-        <div class="grupo" style={`--col:${1 + gi * 3}`}>
-          <h3>{g.nombre}</h3>
-          <ul data-reveal>
-            {g.items.map((it) => (
+      servicios.map((s, i) => (
+        <li class="servicio" data-draw>
+          <svg class="trazos servicio__icono" viewBox="0 0 100 100" aria-hidden="true">
+            <g style="--w:4.5">
+              {(iconos[s.nombre] ?? []).map((d, k) => (
+                <path pathLength="1" style={`--d:${k + i * 0.5}`} d={d} />
+              ))}
+            </g>
+          </svg>
+          <div>
+            <h3>{s.nombre}</h3>
+            <p>{s.detalle}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="extras">
+    {
+      [
+        { titulo: 'Lo que te damos', items: teDamos },
+        { titulo: 'Con qué trabajamos', items: herramientas },
+      ].map((g) => (
+        <div class="extra">
+          <h3>{g.titulo}</h3>
+          <ul data-draw>
+            {g.items.map((it, k) => (
               <li>
-                <button type="button" class="item" data-nombre={it.nombre} data-desc={it.desc}>
-                  <span>{it.nombre}</span>
-                </button>
-                <span class="item__desc">{it.desc}</span>
+                <svg class="trazos check" viewBox="0 0 60 60" aria-hidden="true">
+                  <path pathLength="1" style={`--d:${k}; --w:5`} d="M8 32 L22 46 L52 12" />
+                </svg>
+                <span>
+                  <strong>{it.nombre}</strong> <span class="extra__nota">{it.nota}</span>
+                </span>
               </li>
             ))}
           </ul>
         </div>
       ))
     }
-
-    <div class="panel">
-      <div class="panel__texto" data-panel aria-hidden="true">
-        <p class="panel__nombre" data-panel-nombre>{servicios[0].nombre}</p>
-        <p data-panel-desc>{servicios[0].detalle}</p>
-      </div>
-      <p class="panel__cierre">
-        ¿No sabés por cuál empezar? <a class="link" href="#contacto">Contanos tu espacio</a>.
-      </p>
+    <div class="extra extra--cierre">
+      <p class="mano">¿No sabés por cuál empezar?</p>
+      <a class="btn" href="#contacto">Contanos tu espacio</a>
     </div>
   </div>
 </section>
@@ -49,152 +97,117 @@ const grupos = [
     padding-block: var(--section-gap);
   }
 
-  .indice {
+  .cabeza {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 32px;
+  }
+
+  .cabeza__nota {
+    color: var(--celeste);
+    rotate: -3deg;
+  }
+
+  .lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(40px, 5vw, 72px) clamp(32px, 6vw, 96px);
     margin-top: clamp(56px, 7vw, 96px);
+  }
+
+  .servicio {
+    display: grid;
+    grid-template-columns: clamp(64px, 7vw, 96px) minmax(0, 1fr);
+    gap: 24px;
     align-items: start;
   }
 
-  .grupo {
-    grid-column: var(--col) / span 3;
-  }
-
-  .grupo h3 {
-    font-weight: 500;
-    margin-bottom: 1.3em;
-  }
-
-  .grupo ul {
-    display: grid;
-  }
-
-  .item {
-    display: block;
+  .servicio__icono {
     width: 100%;
-    padding: 3px 0;
-    border: 0;
-    background: none;
+    color: var(--arena);
+    transition: rotate 400ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .servicio:hover .servicio__icono {
+      rotate: -8deg;
+    }
+  }
+
+  .servicio h3 {
+    font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .servicio p {
+    margin-top: 10px;
+    max-width: 42ch;
     color: var(--sec-soft);
-    font: 400 var(--step-body) / 1.3 var(--sans);
-    text-align: left;
-    cursor: default;
-    transition: color 180ms ease;
   }
 
-  .item:hover,
-  .item:focus-visible,
-  .item.is-on {
-    color: var(--sec-ink);
-  }
-
-  /* El ítem activo se subraya con una barra que crece desde la izquierda. */
-  .item span {
-    position: relative;
-    display: inline-block;
-  }
-
-  .item span::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
-    height: 2px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 360ms var(--ease-out);
-  }
-
-  .item.is-on span::after {
-    transform: scaleX(1);
-  }
-
-  /* Oculta a la vista en escritorio (el panel la muestra), pero la leen los lectores de pantalla. */
-  .item__desc {
-    position: absolute;
-    width: 1px; /* taste-skill-ignore: patrón sr-only, no es una línea */
-    height: 1px; /* taste-skill-ignore: patrón sr-only, no es una línea */
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .panel {
-    grid-column: 10 / -1;
+  .extras {
     display: grid;
-    gap: 32px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 48px clamp(32px, 6vw, 96px);
+    margin-top: clamp(80px, 10vw, 144px);
   }
 
-  .panel__texto {
-    min-height: 7.5em;
-    transition:
-      opacity 220ms ease,
-      transform 320ms var(--ease-out);
+  .extra h3 {
+    margin-bottom: 16px;
   }
 
-  .panel__texto.is-swapping {
-    opacity: 0;
-    transform: translateY(10px);
+  .extra ul {
+    display: grid;
+    gap: 6px;
   }
 
-  .panel__nombre {
-    font-weight: 500;
-    margin-bottom: 6px;
+  .extra li {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
   }
 
-  .panel__cierre {
+  .check {
+    width: 26px;
+    margin-top: 2px;
+    color: var(--celeste);
+  }
+
+  .extra__nota {
     color: var(--sec-soft);
+  }
+
+  .extra--cierre {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    justify-items: start;
+  }
+
+  .extra--cierre .mano {
+    color: var(--celeste);
   }
 
   @media (max-width: 960px) {
-    .indice {
-      row-gap: 48px;
+    .lista {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .grupo {
-      grid-column: span 6;
+    .extras {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .panel {
-      display: none;
-    }
-
-    .item {
-      color: var(--sec-ink);
-      font-weight: 500;
-      padding-top: 14px;
-      pointer-events: none;
-    }
-
-    .item span::after {
-      display: none;
-    }
-
-    .item__desc {
-      position: static;
-      width: auto;
-      height: auto;
-      clip-path: none;
-      white-space: normal;
-      display: block;
-      max-width: 44ch;
-      color: var(--sec-soft);
-      line-height: 1.45;
+    .extra--cierre {
+      grid-column: 1 / -1;
     }
   }
 
-  @media (max-width: 760px) {
-    .indice {
-      margin-top: 48px;
-      row-gap: 40px;
-    }
-
-    .grupo {
-      grid-column: 1 / -1;
-    }
-
-    .grupo h3 {
-      margin-bottom: 0.4em;
+  @media (max-width: 640px) {
+    .extras {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

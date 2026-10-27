@@ -2,25 +2,34 @@
 import { Image } from 'astro:assets';
 import Pedido from './islands/Pedido';
 import acequia from '../assets/archivo/acequia.jpg';
-import { contacto, piezas, destinos } from '../data/contenido';
+import { contacto } from '../data/contenido';
 
 const wa = `https://wa.me/${contacto.whatsapp}`;
 ---
 
-<section class="contacto wrap" id="contacto" aria-labelledby="contacto-t" data-tema="papel">
-  <Pedido client:visible email={contacto.email} whatsapp={contacto.whatsapp} piezas={piezas} destinos={destinos} />
+<section class="contacto wrap" id="contacto" aria-labelledby="contacto-t" data-tema="arena">
+  <Pedido client:visible email={contacto.email} whatsapp={contacto.whatsapp} />
 
-  <div class="banda grid">
-    <p class="frase">Escribinos por tu casa, tu local, tu vidriera o tu evento.</p>
-    <div class="retrato" data-parallax>
-      <Image
-        src={acequia}
-        alt="Acequia de Mendoza con piedras, una baranda negra y enredadera"
-        widths={[200, 340]}
-        sizes="160px"
-        loading="lazy"
-      />
-    </div>
+  <div class="banda">
+    <p class="frase">Contanos de tu casa, tu local o tu evento.</p>
+    <figure class="retrato" data-draw>
+      <svg class="trazos retrato__nota" viewBox="0 0 220 96" aria-hidden="true">
+        <g class="t-rojo" style="--w:4">
+          <text x="6" y="40" font-size="40" style="--d:1">desde Mendoza</text>
+          <path pathLength="1" style="--d:1" d="M170 50 C182 62 186 76 180 92 M180 92 L170 74 M180 92 L194 78"></path>
+        </g>
+      </svg>
+      <div class="retrato__foto" data-parallax>
+        <Image
+          src={acequia}
+          alt="Acequia de Mendoza con piedras, una baranda negra y enredadera"
+          widths={[300, 500]}
+          sizes="200px"
+          loading="lazy"
+        />
+      </div>
+
+    </figure>
     <div class="directo">
       <p class="directo__q">¿Preferís escribir directo?</p>
       <ul>
@@ -36,41 +45,57 @@ const wa = `https://wa.me/${contacto.whatsapp}`;
 
 <style>
   .contacto {
-    padding-bottom: 120px;
+    padding-block: var(--section-gap) 120px;
   }
 
   .banda {
-    margin-top: 160px;
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 2fr) minmax(0, 4fr);
+    gap: 40px clamp(24px, 4vw, 64px);
     align-items: start;
+    margin-top: clamp(112px, 12vw, 176px);
   }
 
   .frase {
-    grid-column: 1 / span 5;
-    font-family: var(--serif);
-    font-weight: 300;
-    font-size: clamp(1.625rem, 1rem + 1.4vw, 2.25rem);
-    line-height: 1.15;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    max-width: 22ch;
   }
 
   .retrato {
-    grid-column: 8 / span 2;
-    max-width: 170px;
+    position: relative;
+    max-width: 200px;
   }
 
-  .retrato :global(img) {
+  .retrato__foto {
+    overflow: hidden;
+    border-radius: 50%;
+    rotate: -4deg;
+  }
+
+  .retrato__foto :global(img) {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
   }
 
+  .retrato__nota {
+    display: block;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
   .directo {
-    grid-column: 10 / -1;
     display: grid;
-    gap: 20px;
+    gap: 18px;
   }
 
   .directo__q {
-    font-weight: 500;
+    font-weight: 800;
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
   }
 
   .directo ul {
@@ -81,40 +106,22 @@ const wa = `https://wa.me/${contacto.whatsapp}`;
   .directo a {
     display: inline-block;
     padding-block: 4px;
+    font-weight: 600;
     overflow-wrap: anywhere;
   }
 
   @media (max-width: 960px) {
+    .banda {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
     .frase {
       grid-column: 1 / -1;
-      margin-bottom: 40px;
     }
 
     .retrato {
-      grid-column: 1 / span 3;
+      max-width: 150px;
     }
 
-    .directo {
-      grid-column: 4 / -1;
-    }
-  }
-
-  @media (max-width: 760px) {
-    .banda {
-      margin-top: 112px;
-    }
-
-    .frase {
-      font-size: var(--step-lead);
-    }
-
-    .retrato {
-      grid-column: 1 / span 4;
-      max-width: 96px;
-    }
-
-    .directo {
-      grid-column: 5 / -1;
-    }
   }
 </style>

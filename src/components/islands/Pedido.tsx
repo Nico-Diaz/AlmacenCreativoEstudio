@@ -1,7 +1,7 @@
 import { useId, useState, type FormEvent } from 'react';
 import './Pedido.css';
 
-type Props = { email: string; whatsapp: string; piezas: string[]; destinos: string[] };
+type Props = { email: string; whatsapp: string };
 
 const ESPACIOS = [
   'Casa o departamento',
@@ -9,6 +9,15 @@ const ESPACIOS = [
   'Propiedad en venta o alquiler',
   'Evento',
 ];
+// Círculo de marcador que encierra la opción elegida.
+function Circulo() {
+  return (
+    <svg className="chip__circulo" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+      <path pathLength={1} d="M34 9 C92 1 168 4 191 25 C201 45 152 58 92 56 C32 54 4 45 8 27 C12 13 44 6 76 5" />
+    </svg>
+  );
+}
+
 const NECESIDADES = [
   'Diseño de interiores',
   'Diseño inmobiliario',
@@ -22,30 +31,16 @@ function alternar(lista: string[], valor: string) {
   return lista.includes(valor) ? lista.filter((v) => v !== valor) : [...lista, valor];
 }
 
-export default function Pedido({ email, whatsapp, piezas, destinos }: Props) {
+export default function Pedido({ email, whatsapp }: Props) {
   const [espacio, setEspacio] = useState<string | null>(null);
   const [necesidades, setNecesidades] = useState<string[]>([]);
-  const [inventario, setInventario] = useState<Record<string, string>>({});
   const [nombre, setNombre] = useState('');
   const [nota, setNota] = useState('');
   const id = useId();
 
-  const marcar = (pieza: string, destino: string) =>
-    setInventario((inv) => {
-      const sig = { ...inv };
-      if (sig[pieza] === destino) delete sig[pieza];
-      else sig[pieza] = destino;
-      return sig;
-    });
-
-  const porDestino = destinos
-    .map((d) => ({ destino: d, piezas: piezas.filter((p) => inventario[p] === d) }))
-    .filter((g) => g.piezas.length > 0);
-
   const renglones = [
     espacio && `Espacio: ${espacio}`,
     ...necesidades.map((n) => `Necesito: ${n}`),
-    ...porDestino.map((g) => `${g.destino}: ${g.piezas.join(', ')}`),
     nota.trim() && `Nota: ${nota.trim()}`,
   ].filter(Boolean) as string[];
 
@@ -62,22 +57,16 @@ export default function Pedido({ email, whatsapp, piezas, destinos }: Props) {
     window.location.href = mailto;
   };
 
-  const marcadas = Object.keys(inventario).length;
-  const resumen = [
-    espacio,
-    ...necesidades,
-    marcadas > 0 && `${marcadas} ${marcadas === 1 ? 'pieza' : 'piezas'} en el inventario`,
-  ]
-    .filter(Boolean)
-    .join(', ');
+  const resumen = [espacio, ...necesidades].filter(Boolean).join(', ');
 
   return (
     <form className="pedido" onSubmit={enviar} aria-labelledby="contacto-t">
       <div className="pedido__intro">
         <h2 id="contacto-t">Armá tu pedido</h2>
+        <p className="pedido__mano">marcá lo que va</p>
         <p>
-          Contanos qué espacio es, qué necesitás y qué querés hacer con lo que ya tenés. Lo mandás por email o
-          WhatsApp y te respondemos en dos días hábiles.
+          Contanos qué espacio es y qué necesitás. Lo mandás por email o WhatsApp y te respondemos en dos días
+          hábiles.
         </p>
       </div>
 
@@ -93,7 +82,8 @@ export default function Pedido({ email, whatsapp, piezas, destinos }: Props) {
                 aria-pressed={espacio === e}
                 onClick={() => setEspacio(espacio === e ? null : e)}
               >
-                {e}
+                <span>{e}</span>
+                <Circulo />
               </button>
             ))}
           </div>
@@ -110,37 +100,11 @@ export default function Pedido({ email, whatsapp, piezas, destinos }: Props) {
                 aria-pressed={necesidades.includes(n)}
                 onClick={() => setNecesidades(alternar(necesidades, n))}
               >
-                {n}
+                <span>{n}</span>
+                <Circulo />
               </button>
             ))}
           </div>
-        </fieldset>
-
-        <fieldset className="inventario">
-          <legend>Tu inventario</legend>
-          <p className="inventario__ayuda">Marcá qué hacemos con cada cosa que ya tenés. Podés dejar filas sin marcar.</p>
-          <ul>
-            {piezas.map((p) => (
-              <li key={p} className="pieza">
-                <span className="pieza__nombre" id={`${id}-${p}`}>
-                  {p}
-                </span>
-                <div className="pieza__destinos" role="group" aria-labelledby={`${id}-${p}`}>
-                  {destinos.map((d) => (
-                    <button
-                      type="button"
-                      key={d}
-                      className="destino"
-                      aria-pressed={inventario[p] === d}
-                      onClick={() => marcar(p, d)}
-                    >
-                      {d}
-                    </button>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ul>
         </fieldset>
 
         <div className="pedido__datos">

@@ -1,273 +1,205 @@
 ---
 import { Image } from 'astro:assets';
-import stand from '../assets/fotos/trombetta-stand.jpg';
-import pared from '../assets/fotos/altier-pared.jpg';
-import sala from '../assets/fotos/pinotea-a.jpg';
+import almacen from '../assets/archivo/almacen.jpg';
 ---
 
-<header class="hero" id="inicio" data-tema="papel">
-  <div class="riel wrap grid">
-    <figure class="copia copia--chica">
-      <Image
-        src={sala}
-        alt="Sala con un sillón capitoné verde, una mesa de madera y tres láminas enmarcadas"
-        widths={[300, 500]}
-        sizes="(max-width: 960px) 34vw, 190px"
-        loading="eager"
-      />
-    </figure>
-
-    <div class="titular">
-      <h1 class="lineas">
-        <span class="linea"><span data-line style="--i:0">Interiores con</span></span>
-        <span class="linea"><span data-line style="--i:1">lo que ya tenés</span></span>
-      </h1>
-      <div class="titular__copete" data-after-lines>
-        <p>
-          Somos un estudio de diseño de interiores en Mendoza. Casas, locales, vidrieras y eventos, a partir de lo que
-          ya está.
-        </p>
-        <a class="btn" href="#contacto">Contanos tu espacio</a>
-      </div>
+<header class="hero wrap" id="inicio" data-tema="papel">
+  <div class="titular">
+    <h1 class="lineas">
+      <span class="linea"><span data-line style="--i:0">Interiores con</span></span>
+      <span class="linea"><span data-line style="--i:1">lo que ya tenés</span></span>
+    </h1>
+    <div class="copete" data-after-lines>
+      <p>
+        Somos un estudio de diseño de interiores en Mendoza. Dibujamos sobre tu casa, tu local o tu evento, a partir de
+        lo que ya está.
+      </p>
+      <a class="btn" href="#contacto">Contanos tu espacio</a>
     </div>
-
-    <figure class="copia copia--alta">
-      <div class="obturador" data-shutter>
-        <Image
-          src={pared}
-          alt="Pared de exhibición de Altiér beauty con estantes de productos y podios espejados"
-          widths={[500, 900, 1300]}
-          sizes="(max-width: 960px) 75vw, 46vw"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-      <figcaption class="nota">Stand de Altiér beauty en feria</figcaption>
-    </figure>
-
-    <figure class="copia copia--ancha">
-      <Image
-        src={stand}
-        alt="Stand rojo y blanco de Óptica Trombetta bajo una carpa negra en el torneo Máximo Navesi"
-        widths={[600, 1000, 1600]}
-        sizes="(max-width: 960px) 100vw, 30vw"
-        loading="eager"
-      />
-      <figcaption class="nota">Stand Trombetta, torneo Máximo Navesi</figcaption>
-    </figure>
   </div>
+
+  <!-- La foto y sus anotaciones comparten el mismo sistema de coordenadas (1920 × 1444) y el mismo recorte. -->
+  <figure class="lamina">
+    <div class="lamina__marco">
+      <Image
+        src={almacen}
+        alt="Almacén de ramos generales con estantes de radios y relojes, una vitrina, una mecedora y máquinas de coser"
+        widths={[800, 1400, 2000]}
+        sizes="(max-width: 760px) 100vw, 92vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <svg class="trazos" viewBox="0 0 1920 1444" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-draw data-draw-load>
+        <!-- Lámpara colgante nueva -->
+        <g class="t-rojo" style="--w:6">
+          <path pathLength="1" style="--d:0" d="M985 -10 C987 50 983 100 986 158"></path>
+          <path pathLength="1" style="--d:1" d="M930 214 C942 176 960 158 986 156 C1014 158 1032 178 1044 214 C1008 222 966 222 930 214 Z"></path>
+          <path pathLength="1" style="--d:2" d="M970 222 C972 240 1000 242 1002 222"></path>
+          <path pathLength="1" style="--d:3" d="M900 262 L878 288 M988 268 L988 304 M1074 262 L1098 288"></path>
+        </g>
+        <!-- Cuadro nuevo con la cordillera -->
+        <g class="solo-ancho t-rojo" style="--w:6">
+          <path pathLength="1" style="--d:2" d="M1580 92 C1660 88 1760 90 1832 96 C1836 170 1834 240 1830 300 C1750 304 1660 302 1584 298 C1578 230 1576 160 1580 92 Z"></path>
+          <path pathLength="1" style="--d:3" d="M1604 270 L1664 186 L1702 232 L1748 160 L1810 270"></path>
+          <circle class="relleno" cx="1776" cy="140" r="13" style="--d:4"></circle>
+        </g>
+        <!-- La mecedora: se queda -->
+        <g class="solo-ancho t-bordo" style="--w:7">
+          <path pathLength="1" style="--d:3" d="M1416 300 C1440 262 1520 250 1570 284 C1614 316 1604 410 1560 440 C1508 476 1428 460 1404 410 C1388 374 1396 330 1430 300 C1462 276 1520 272 1556 292"></path>
+          <path pathLength="1" style="--d:4" d="M1640 520 C1620 480 1600 456 1566 446 M1566 446 L1600 444 M1566 446 L1578 478"></path>
+          <text x="1590" y="590" font-size="84" style="--d:4">se queda</text>
+        </g>
+        <!-- La vitrina: la restauramos -->
+        <g class="t-arena" style="--w:8">
+          <path pathLength="1" style="--d:5" d="M492 812 C700 798 920 800 1136 808 C1146 980 1150 1150 1140 1318 C930 1330 700 1328 494 1320 C484 1150 482 980 492 812 Z"></path>
+          <path pathLength="1" style="--d:6" d="M520 784 C640 770 760 772 880 780"></path>
+        </g>
+        <g class="solo-ancho t-rojo" style="--w:7">
+          <path pathLength="1" style="--d:6" d="M1300 1296 C1250 1290 1200 1276 1158 1250 M1158 1250 L1194 1240 M1158 1250 L1176 1282"></path>
+          <text x="1290" y="1362" font-size="84" style="--d:6">la restauramos</text>
+        </g>
+        <!-- En celular la nota va debajo de la vitrina, dentro del recorte -->
+        <g class="solo-movil t-rojo" style="--w:8">
+          <path pathLength="1" style="--d:6" d="M760 1330 C790 1300 800 1270 790 1240 M790 1240 L772 1270 M790 1240 L816 1262"></path>
+          <text x="440" y="1420" font-size="96" style="--d:6">la restauramos</text>
+        </g>
+        <!-- Alfombra nueva en el piso -->
+        <g class="t-rojo" style="--w:6">
+          <path pathLength="1" style="--d:7" d="M360 1400 C560 1360 940 1356 1220 1384 C1300 1392 1320 1430 1250 1444"></path>
+        </g>
+        <!-- Estrellas -->
+        <g class="solo-ancho t-rojo" style="--w:6">
+          <path pathLength="1" style="--d:1" d="M250 120 L272 182 L338 186 L286 224 L306 288 L250 250 L196 288 L214 224 L162 186 L228 182 Z"></path>
+        </g>
+        <g class="t-arena" style="--w:6">
+          <path pathLength="1" style="--d:8" d="M1720 1060 L1738 1110 L1792 1114 L1750 1144 L1766 1196 L1720 1166 L1676 1196 L1690 1144 L1648 1114 L1702 1110 Z"></path>
+        </g>
+        <!-- Nota general -->
+        <g class="solo-ancho t-bordo">
+          <text x="120" y="420" font-size="80" style="--d:2">lo que</text>
+          <text x="120" y="496" font-size="80" style="--d:2">ya tenés</text>
+          <path pathLength="1" style="--d:3; --w:6" d="M300 520 C320 570 300 620 252 660 M252 660 L264 626 M252 660 L288 652"></path>
+        </g>
+      </svg>
+    </div>
+    <figcaption class="nota">
+      Un almacén de ramos generales (Museo Histórico de Casilda, Santa Fe), con nuestras notas encima: así empieza
+      cada proyecto.
+    </figcaption>
+  </figure>
 </header>
 
 <style>
   .hero {
     position: relative;
-    overflow: clip;
-    padding-bottom: clamp(48px, 7vw, 96px);
+    padding-top: clamp(24px, 5vh, 56px);
+    padding-bottom: clamp(56px, 8vw, 112px);
     view-timeline-name: --hero;
   }
 
-  .riel {
-    padding-top: clamp(16px, 5vh, 56px);
-    grid-template-rows: auto 1fr;
-    align-items: start;
-  }
-
-  /* Al salir, las copias bajan un poco y se apagan, y el titular sube algo más rápido. */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .copia {
-        animation: copia-baja linear both;
-        animation-timeline: --hero;
-        animation-range: exit 0% exit 100%;
-      }
-
-      .copia--chica {
-        animation-name: copia-sube;
-      }
-
-      .titular {
-        animation: titular-sube linear both;
-        animation-timeline: --hero;
-        animation-range: exit 0% exit 70%;
-      }
-    }
-  }
-
-  @keyframes copia-baja {
-    to {
-      transform: translateY(7%);
-      opacity: 0.55;
-    }
-  }
-
-  @keyframes copia-sube {
-    to {
-      transform: translateY(-14%);
-      opacity: 0.55;
-    }
-  }
-
-  @keyframes titular-sube {
-    to {
-      transform: translateY(-18%);
-      opacity: 0;
-    }
-  }
-
-  .copia :global(img) {
-    width: 100%;
-    object-fit: cover;
-  }
-
-  .copia figcaption {
-    margin-top: 12px;
-  }
-
-  /* Las tres copias cuelgan de la misma línea superior, cada una de su tamaño. */
-  .copia--chica {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-  }
-
-  .copia--chica :global(img) {
-    aspect-ratio: 1;
-    object-position: 30% 70%;
-  }
-
   .titular {
-    grid-column: 1 / span 3;
-    grid-row: 2;
-    padding-top: clamp(28px, 5vh, 56px);
     display: grid;
-    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 30ch);
+    align-items: end;
+    gap: 24px 48px;
   }
 
   h1 {
-    font-size: clamp(2rem, 1rem + 2vw, 2.625rem);
-    line-height: 1.04;
+    font-size: clamp(3rem, 0.6rem + 7.6vw, 9.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.055em;
   }
 
   h1 span {
     white-space: nowrap;
   }
 
-  .titular__copete {
+  .copete {
     display: grid;
-    gap: 28px;
+    gap: 24px;
     justify-items: start;
+    padding-bottom: 0.6em;
   }
 
-  .titular__copete p {
-    max-width: 30ch;
+  .lamina {
+    margin-top: clamp(28px, 4vw, 56px);
   }
 
-  .copia--alta {
-    grid-column: 4 / span 6;
-    grid-row: 1 / span 2;
-  }
-
-  .obturador {
+  .lamina__marco {
+    position: relative;
     overflow: hidden;
+    border-radius: clamp(16px, 2vw, 28px);
+    aspect-ratio: 16 / 9.5;
   }
 
-  .copia--alta :global(img) {
-    height: max(440px, calc(100svh - 190px));
-    object-position: 50% 45%;
+  .lamina__marco :global(img),
+  .lamina__marco .trazos {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  .copia--ancha {
-    grid-column: 10 / -1;
-    grid-row: 1 / span 2;
-    margin-right: calc(-1 * var(--gutter));
+  .lamina__marco :global(img) {
+    object-fit: cover;
   }
 
-  .copia--ancha :global(img) {
-    aspect-ratio: 4 / 3;
-    object-position: 45% 60%;
+  .trazos .solo-movil {
+    display: none;
   }
 
-  .copia--ancha figcaption {
-    padding-right: var(--gutter);
+  .lamina figcaption {
+    margin-top: 12px;
+    max-width: 70ch;
   }
 
-  /* Tablet y celular: el riel se vuelve vertical y cambian los bordes izquierdos. */
+  /* Al bajar, la lámina se achica apenas y el titular sube: el primer pantallazo se retira. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .titular {
+        animation: titular-sube linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 60%;
+      }
+    }
+  }
+
+  @keyframes titular-sube {
+    to {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+  }
+
   @media (max-width: 960px) {
-    .riel {
-      padding-top: 8px;
-      grid-template-rows: none;
-    }
-
-    .copia--alta {
-      grid-column: 1 / span 9;
-      grid-row: 1;
-    }
-
-    .copia--alta :global(img) {
-      height: auto;
-      aspect-ratio: 4 / 5;
-    }
-
-    .copia--alta figcaption {
-      display: none;
-    }
-
-    .copia--chica {
-      grid-column: 9 / -1;
-      grid-row: 2;
-      margin-top: -40px;
-      position: relative;
-    }
-
     .titular {
-      display: contents;
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    h1 {
-      grid-column: 1 / span 8;
-      grid-row: 2;
-      padding-top: 24px;
-      font-size: clamp(1.75rem, 7.4vw, 3.25rem);
-    }
-
-    .titular__copete {
-      grid-column: 1 / -1;
-      grid-row: 3;
-      margin-top: 20px;
-      gap: 24px;
-    }
-
-    .copia--ancha {
-      grid-column: 1 / -1;
-      grid-row: 4;
-      margin-top: 48px;
-      margin-inline: calc(-1 * var(--gutter));
-    }
-
-    .copia--ancha :global(img) {
-      aspect-ratio: 16 / 10;
-    }
-
-    .copia--ancha figcaption {
-      display: none;
-    }
-  }
-
-  @media (min-width: 761px) and (max-width: 960px) {
-    .copia--alta {
-      grid-column: 1 / span 7;
-    }
-
-    .copia--chica {
-      grid-column: 8 / span 3;
-      grid-row: 1;
-      margin-top: 0;
-      align-self: end;
+    h1 span {
+      white-space: normal;
     }
   }
 
   @media (max-width: 760px) {
-    .titular__copete .btn {
+    h1 {
+      font-size: 13.4vw;
+    }
+
+    .lamina__marco {
+      aspect-ratio: 4 / 5;
+    }
+
+    .copete .btn {
       width: 100%;
+    }
+
+    .trazos .solo-ancho {
+      display: none;
+    }
+
+    .trazos .solo-movil {
+      display: inline;
     }
   }
 </style>

@@ -1,10 +1,14 @@
 ---
 import { PiListLight, PiXLight } from 'react-icons/pi';
+import Logo from './Logo.astro';
 import { nav } from '../data/contenido';
 ---
 
 <div class="barra wrap" data-tema="papel" data-barra>
-  <a class="marca" href="#inicio">Almacen Creativo</a>
+  <a class="marca" href="#inicio" aria-label="Almacen Creativo, volver al inicio">
+    <Logo class="marca__logo" />
+    <span class="marca__nombre">Almacen Creativo</span>
+  </a>
   <nav aria-label="Principal" class="barra__nav">
     <ul>
       {nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
@@ -41,13 +45,33 @@ import { nav } from '../data/contenido';
   }
 
   .marca {
-    font-family: var(--serif);
-    font-weight: 300;
-    font-size: var(--step-lead);
-    line-height: 1;
-    letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  .marca :global(.marca__logo) {
+    width: 44px;
+    height: 44px;
+    color: var(--sec-trazo);
+    transition:
+      transform 500ms var(--ease-out),
+      color 300ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .marca:hover :global(.marca__logo) {
+      transform: rotate(-12deg) scale(1.06);
+    }
+  }
+
+  .marca__nombre {
+    font-weight: 800;
+    font-size: var(--step-lead);
+    letter-spacing: -0.035em;
+    line-height: 1;
   }
 
   .barra__nav ul {
@@ -58,8 +82,10 @@ import { nav } from '../data/contenido';
   .barra__nav a {
     display: inline-block;
     padding-block: 10px;
+    font-weight: 600;
     font-size: var(--step-small);
     text-decoration-line: underline;
+    text-decoration-thickness: 2px;
     text-decoration-color: transparent;
     transition: text-decoration-color 180ms ease;
   }
@@ -73,7 +99,7 @@ import { nav } from '../data/contenido';
   .barra__accion {
     justify-self: end;
     min-height: 44px;
-    padding-inline: 20px;
+    padding-inline: 22px;
     font-size: var(--step-small);
     transition:
       transform 160ms var(--ease-out),
@@ -103,11 +129,15 @@ import { nav } from '../data/contenido';
     transform: scale(0.94);
   }
 
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+
   /* Las líneas se vuelven una X al abrir: los dos íconos se cruzan con giro y opacidad. */
   .menu :global(.menu__icono) {
     grid-area: 1 / 1;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     transition:
       opacity 180ms ease,
       transform 260ms var(--ease-out);
@@ -135,36 +165,34 @@ import { nav } from '../data/contenido';
     }
   }
 
-  .menu summary::-webkit-details-marker {
-    display: none;
-  }
-
   .menu ul {
     position: absolute;
     right: 0;
     top: 100%;
     z-index: 20;
-    min-width: 220px;
+    min-width: 230px;
     padding: 12px 0;
+    border-radius: 20px;
     background: var(--btn-bg);
     color: var(--btn-ink);
     transform-origin: top right;
   }
 
   .menu[open] ul {
-    animation: menu-in 200ms var(--ease-out);
+    animation: menu-in 220ms var(--ease-out);
   }
 
   .menu a {
     display: block;
-    padding: 12px 20px;
+    padding: 12px 22px;
+    font-weight: 700;
     text-decoration: none;
   }
 
   @keyframes menu-in {
     from {
       opacity: 0;
-      transform: scale(0.96);
+      transform: scale(0.94);
     }
   }
 
@@ -180,6 +208,12 @@ import { nav } from '../data/contenido';
 
     .menu {
       display: block;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .marca__nombre {
+      font-size: 1.125rem;
     }
   }
 </style>

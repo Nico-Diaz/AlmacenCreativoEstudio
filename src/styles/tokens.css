@@ -1,20 +1,4 @@
 @font-face {
-  font-family: 'Zodiak';
-  src: url('/fonts/zodiak-100.woff2') format('woff2');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Zodiak';
-  src: url('/fonts/zodiak-300.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'Hanken Grotesk';
   src: url('/fonts/hanken-grotesk.woff2') format('woff2');
   font-weight: 100 900;
@@ -22,31 +6,38 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/caveat.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  /* Fondo papel frío sacado del celeste de la marca; el rojo es la tinta. */
-  --ground: #f1f4f7;
-  --tone: #e3eaf1;
-  --field: #afc8de;
-  --field-pale: #dce6ef;
-  --ink: #8c2e21;
-  --ink-deep: #5e1d15;
-  --ink-soft: #44596b;
-  --paper: #f6f8fa;
+  /* Paleta de la marca: la del logo (rojo sobre celeste) y la de la guía (marrón, oliva, bordó, arena). */
+  --rojo: #832f27;
+  --celeste: #b3cee1;
+  --marron: #5f2e20;
+  --oliva: #937b21;
+  --bordo: #7a113a;
+  --arena: #efd099;
+  --papel: #f8edd7;
 
-  --serif: 'Zodiak', 'Iowan Old Style', Georgia, serif;
   --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --mano: 'Caveat', 'Segoe Print', cursive;
 
-  /* Cinco tamaños en toda la página. */
+  /* Cinco tamaños de texto, más la letra manuscrita de las notas. */
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
   --step-lead: clamp(1.25rem, 1.05rem + 0.6vw, 1.625rem);
-  --step-head: clamp(2.5rem, 1.6rem + 3vw, 4.25rem);
-  --step-display: clamp(3.5rem, 0.5rem + 10vw, 11rem);
+  --step-head: clamp(2.5rem, 1.4rem + 4vw, 5.5rem);
+  --step-display: clamp(3.25rem, 1rem + 8vw, 10rem);
+  --step-nota: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
 
-  --gutter: clamp(20px, 5vw, 80px);
+  --gutter: clamp(20px, 4vw, 64px);
   --col-gap: clamp(12px, 1.6vw, 24px);
-  --section-gap: clamp(112px, 13vw, 220px);
-
+  --section-gap: clamp(96px, 11vw, 180px);
   --bar-h: 72px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

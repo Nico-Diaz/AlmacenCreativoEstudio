@@ -1,21 +1,11 @@
 ---
-import { Image } from 'astro:assets';
-import cordillera from '../assets/archivo/cordillera.jpg';
+import Logo from './Logo.astro';
 import { contacto, nav, creditos } from '../data/contenido';
 ---
 
-<footer class="pie" data-barra-tema="rojo">
-  <div class="pie__foto">
-    <Image
-      src={cordillera}
-      alt="Cordillera de los Andes nevada en Mendoza, con una ruta que cruza el valle"
-      widths={[900, 1600, 2400]}
-      sizes="100vw"
-      loading="lazy"
-    />
-  </div>
-
-  <div class="pie__arriba wrap">
+<footer class="pie wrap" data-tema="bordo">
+  <div class="pie__arriba">
+    <Logo class="pie__logo" titulo="Almacen Creativo" />
     <ul class="pie__links">
       {nav.map((l) => <li><a class="link" href={l.href}>{l.label}</a></li>)}
     </ul>
@@ -38,73 +28,50 @@ import { contacto, nav, creditos } from '../data/contenido';
         ))
       }
     </ul>
+    <p class="mano pie__firma">hecho a mano en Mendoza</p>
   </div>
 
-  <div class="pie__abajo wrap">
-    <p class="pie__marca">Almacen Creativo</p>
-    <p class="pie__legal">
-      Mendoza, {new Date().getFullYear()}. Imágenes de archivo:{' '}
-      {
-        creditos.map((c, i) => (
-          <>
-            <a class="link" href={c.url} target="_blank" rel="noopener noreferrer">
-              {c.titulo}
-            </a>{' '}
-            ({c.autor}, {c.licencia}){i < creditos.length - 1 ? '; ' : '.'}
-          </>
-        ))
-      }
-    </p>
-  </div>
+  <p class="pie__marca" aria-hidden="true">Almacen Creativo</p>
+
+  <p class="pie__legal">
+    Mendoza, {new Date().getFullYear()}. Imágenes de archivo:{' '}
+    {
+      creditos.map((c, i) => (
+        <>
+          <a class="link" href={c.url} target="_blank" rel="noopener noreferrer">
+            {c.titulo}
+          </a>{' '}
+          ({c.autor}, {c.licencia}){i < creditos.length - 1 ? '; ' : '.'}
+        </>
+      ))
+    }
+  </p>
 </footer>
 
 <style>
   .pie {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto 1fr auto;
-    min-height: 100svh;
     overflow: hidden;
-    color: var(--paper);
-    background: #2f3a44;
-    isolation: isolate;
-  }
-
-  .pie__foto {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-  }
-
-  .pie__foto :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 45%;
-    filter: brightness(0.62);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .pie__foto :global(img) {
-      animation: deriva 40s var(--ease-soft) infinite alternate;
-    }
-  }
-
-  @keyframes deriva {
-    from {
-      transform: scale(1.04) translateX(0);
-    }
-    to {
-      transform: scale(1.1) translateX(-1.5%);
-    }
+    padding-top: clamp(56px, 7vw, 96px);
+    padding-bottom: 32px;
   }
 
   .pie__arriba {
-    display: flex;
-    justify-content: space-between;
-    gap: 32px;
-    padding-top: 32px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 32px clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .pie :global(.pie__logo) {
+    width: clamp(96px, 11vw, 160px);
+    color: var(--arena);
+    transition: rotate 600ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pie :global(.pie__logo:hover) {
+      rotate: -14deg;
+    }
   }
 
   .pie__links,
@@ -112,6 +79,7 @@ import { contacto, nav, creditos } from '../data/contenido';
     display: grid;
     gap: 6px;
     align-content: start;
+    font-weight: 600;
   }
 
   .pie__contacto {
@@ -123,26 +91,28 @@ import { contacto, nav, creditos } from '../data/contenido';
     padding-block: 3px;
   }
 
-  .pie__abajo {
-    grid-row: 3;
-    padding-bottom: 32px;
+  .pie__firma {
+    grid-column: 2 / -1;
+    color: var(--celeste);
+    rotate: -2deg;
   }
 
   .pie__marca {
-    font-family: var(--serif);
-    font-weight: 100;
-    font-size: 10.2vw;
-    line-height: 0.9;
-    letter-spacing: -0.02em;
+    margin-top: clamp(48px, 7vw, 112px);
+    font-weight: 900;
+    font-size: 12.6vw;
+    line-height: 0.82;
+    letter-spacing: -0.065em;
     white-space: nowrap;
     margin-left: -0.04em;
   }
 
   .pie__legal {
-    margin-top: 24px;
+    margin-top: 32px;
     max-width: 72ch;
     font-size: var(--step-small);
     line-height: 1.5;
+    color: var(--sec-soft);
   }
 
   .pie__legal a {
@@ -150,23 +120,22 @@ import { contacto, nav, creditos } from '../data/contenido';
   }
 
   @media (max-width: 760px) {
-    .pie {
-      min-height: 88svh;
-    }
-
     .pie__arriba {
-      flex-direction: column;
-      gap: 24px;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .pie__contacto {
       text-align: left;
     }
 
+    .pie__firma {
+      grid-column: 1;
+    }
+
     .pie__marca {
-      font-size: 13vw;
+      font-size: 15vw;
       white-space: normal;
-      line-height: 0.95;
+      line-height: 0.88;
     }
   }
 </style>

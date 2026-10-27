@@ -1,17 +1,17 @@
 ---
-const palabras = ['Casas', 'Locales', 'Vidrieras', 'Eventos', 'Propiedades', 'Renders', 'Asesorías'];
+const palabras = ['casas', 'locales', 'vidrieras', 'eventos', 'propiedades', 'renders', 'asesorías'];
 // La fila se repite dos veces para que el loop no tenga corte.
 const fila = [...palabras, ...palabras];
 ---
 
-<div class="franja" data-tema="rojo">
+<div class="franja" data-tema="bordo">
   <div class="franja__pista" aria-hidden="true">
     {
-      fila.map((p) => (
+      fila.map((p, i) => (
         <span class="franja__item">
           {p}
-          <svg viewBox="0 0 10 10" class="franja__punto">
-            <circle cx="5" cy="5" r="5" />
+          <svg viewBox="0 0 100 100" class:list={['franja__estrella', { 'franja__estrella--celeste': i % 2 }]}>
+            <path d="M50 6 L61 37 L94 38 L68 58 L78 92 L50 72 L22 92 L32 58 L6 38 L39 37 Z" />
           </svg>
         </span>
       ))
@@ -22,7 +22,7 @@ const fila = [...palabras, ...palabras];
 <style>
   .franja {
     overflow: clip;
-    padding-block: clamp(20px, 2.6vw, 36px);
+    padding-block: clamp(14px, 2vw, 28px);
   }
 
   .franja__pista {
@@ -35,32 +35,53 @@ const fila = [...palabras, ...palabras];
     align-items: center;
     gap: clamp(20px, 2.4vw, 40px);
     padding-right: clamp(20px, 2.4vw, 40px);
-    font-family: var(--serif);
-    font-weight: 300;
-    font-size: var(--step-head);
+    font-family: var(--mano);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 1.4rem + 3.4vw, 5rem);
     line-height: 1.1;
     white-space: nowrap;
   }
 
-  .franja__punto {
-    width: 0.22em;
-    height: 0.22em;
-    fill: var(--field);
+  .franja__estrella {
+    width: 0.62em;
+    height: 0.62em;
+    fill: none;
+    stroke: var(--arena);
+    stroke-width: 7;
+    stroke-linejoin: round;
+    filter: url(#lapiz);
+    rotate: -8deg;
+  }
+
+  .franja__estrella--celeste {
+    stroke: var(--celeste);
+    rotate: 10deg;
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .franja__pista {
-      animation: franja-corre 38s linear infinite;
+      animation: franja-corre 42s linear infinite;
     }
 
     .franja:hover .franja__pista {
       animation-play-state: paused;
+    }
+
+    .franja__estrella {
+      animation: estrella-gira 6s ease-in-out infinite alternate;
     }
   }
 
   @keyframes franja-corre {
     to {
       transform: translateX(-50%);
+    }
+  }
+
+  @keyframes estrella-gira {
+    to {
+      rotate: 14deg;
+      scale: 1.12;
     }
   }
 </style>

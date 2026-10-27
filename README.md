@@ -29,6 +29,7 @@ El sitio es estático y no tiene backend. Está preparado para publicarse en **V
 | React 19 + `@astrojs/react` | Solo para la isla interactiva del pedido (`client:visible`). El resto es HTML estático. |
 | `react-icons` | Ícono del menú de celular (Phosphor *Light*). Se renderiza como SVG en el build y no suma JavaScript. |
 | CSS propio con tokens | Sin frameworks de estilos. Colores, tipografía y espacios viven en `src/styles/tokens.css`. |
+| SVG a mano | Todos los dibujos (anotaciones, íconos, marcos, el camino del proceso) son SVG escritos en el código, no imágenes. |
 | TypeScript | Datos y scripts tipados. |
 
 No hay librerías de animación. El movimiento usa CSS (incluidas las *scroll-driven animations*) y un script chico.
@@ -38,29 +39,32 @@ No hay librerías de animación. El movimiento usa CSS (incluidas las *scroll-dr
 ```
 src/
   pages/index.astro          Orden de las secciones
-  layouts/BaseLayout.astro   <head>, fuentes precargadas, script de movimiento
+  layouts/BaseLayout.astro   <head>, fuentes, filtro SVG "lápiz", script de movimiento
   components/
-    Header.astro             Barra fija que cambia de color con cada sección
-    Hero.astro               Primer pantallazo: tres fotos "colgadas" y el titular
-    Franja.astro             Marquesina roja con los tipos de trabajo
-    QuienesSomos.astro       Presentación, foto del almacén, planta y datos
-    Servicios.astro          Qué hacemos: índice de servicios con panel de descripción
-    Proyectos.astro          Galería horizontal de los proyectos
-    Proceso.astro            Cómo trabajamos: foto fija y pasos que pasan
-    FAQ.astro                Preguntas frecuentes con <details>
+    Logo.astro               Monograma "ac" vectorizado del logo original (toma el color del texto)
+    Header.astro             Barra fija con el logo; cambia de color con cada sección
+    Hero.astro               Titular + foto del almacén con las anotaciones dibujadas encima
+    Franja.astro             Marquesina bordó con letra manuscrita y estrellas
+    QuienesSomos.astro       Presentación, sello con el logo y datos
+    Servicios.astro          Qué hacemos: seis servicios con íconos dibujados y checklist
+    Proyectos.astro          Galería horizontal con marcos a mano, cinta y notas
+    Proceso.astro            Cómo trabajamos: foto fija, pasos y camino dibujado
+    FAQ.astro                Preguntas frecuentes con <details> y un "+" dibujado
     Contacto.astro           Pedido + contacto directo
-    Footer.astro             Nombre sobre la foto de la cordillera y créditos
+    Footer.astro             Logo, nombre a todo el ancho y créditos
     islands/Pedido.tsx/.css  Formulario del pedido (arma el mailto: y el link de WhatsApp)
   data/contenido.ts          TODO el texto: servicios, proyectos, pasos, preguntas, contacto, créditos
   styles/
     tokens.css               Paleta, fuentes, escala tipográfica, márgenes
-    base.css                 Reset, temas por sección, botones, utilidades
+    base.css                 Reset, temas por sección, botones y el sistema de dibujos
     motion.css               Animaciones de carga, reveals y escenas de scroll
-  scripts/motion.ts          Reveals, índice de servicios, menú, barra, galería, pasos
+  scripts/motion.ts          Reveals y dibujos, menú, barra, galería, pasos
   assets/
-    fotos/                   Fotos propias (y dos temporales de Unsplash)
+    fotos/                   Fotos propias del estudio (y una temporal de Unsplash)
     archivo/                 Imágenes de archivos abiertos, con licencia y crédito
-public/fonts/                Zodiak y Hanken Grotesk (woff2, servidas desde el sitio)
+public/
+  fonts/                     Hanken Grotesk y Caveat (woff2, servidas desde el sitio)
+  favicon.svg                El logo sobre su celeste
 ```
 
 Para cambiar un texto, casi siempre alcanza con editar [src/data/contenido.ts](src/data/contenido.ts).
@@ -84,110 +88,104 @@ Quedan en `.claude/skills/` y se registran en `skills-lock.json`.
 | --- | --- | --- |
 | `find-skills` | vercel-labs/skills | Buscar en el ecosistema las skills adecuadas para el rediseño (`npx skills find ...`). |
 | `frontend-design` | anthropics/skills | Criterio estético: tomar las decisiones a partir del tema y evitar los clichés de diseño generado por IA. |
-| `design-taste-frontend` | leonxlnx/taste-skill | El motor del rediseño: reparte una dirección de arte, busca imágenes de archivos abiertos y trae un inspector que mide la página en un navegador real. |
+| `design-taste-frontend` | leonxlnx/taste-skill | Dirección de arte, búsqueda de imágenes en archivos abiertos y un inspector que mide la página en un navegador real. |
 | `impeccable` | pbakaus/impeccable | Lee `PRODUCT.md` y audita jerarquía, tipografía y accesibilidad. |
 | `emil-design-eng`, `animate`, `review-animations` | emilkowalski/skills | Criterio de movimiento: curvas, duraciones y qué animar y qué no. |
 | `mobile-native` | — | Detalles de celular: alto de pantalla, áreas táctiles, menú. |
 
 `redesign-existing-projects` (también de taste-skill) figuraba en la búsqueda, pero ya no existe como skill aparte: su autor la integró dentro de `design-taste-frontend`.
 
-### 2. Rediseño minimalista
+### 2. Tres versiones del diseño
 
-El diseño anterior era pesado: celeste en toda la página, bloques rojos grandes, un hero partido en mosaico y una columna izquierda casi siempre vacía. Seguimos el proceso de `design-taste-frontend`:
+1. **Minimalista.** Grilla editorial, fotos a tamaños desiguales y serif fina. Quedó prolija pero seca.
+2. **Más color y movimiento.** Fondos enteros por sección y escenas de scroll. Seguía sin la identidad del estudio.
+3. **Cuaderno de obra (la actual).** Rearmada a partir del logo, la paleta de la marca y una referencia de estilo: una foto de obra con muebles dibujados encima en amarillo y estrellas rojas.
 
-1. **Medimos el "antes"** con el inspector, a 1440, 768 y 390 px.
-2. **Hicimos el inventario del tema.** Salieron el nombre (almacén), Mendoza (acequias, cordillera), el reuso de muebles y los oficios locales.
-3. **Elegimos una dirección** entre tres propuestas: *Photographs at uneven sizes*. Las fotos se cuelgan a tamaños desiguales, como copias en una pared de galería, sobre una grilla de 12 columnas.
-4. **Escribimos la idea:** *"lo que ya tenés se guarda, se ordena y vuelve a usarse"*. La parte interactiva de la página sale de ahí.
-5. **Construimos sección por sección** y pasamos el inspector hasta tener 0 fallas.
+### 3. El concepto actual: dibujar sobre lo que ya tenés
 
-### 3. Más vida: color y escenas de scroll
+La referencia muestra exactamente lo que hace el estudio: pararse en un espacio que existe y dibujar encima la propuesta. Toda la página se arma así:
 
-Después de la primera versión, la página se sentía "como un informe". Sumamos color por capítulo y escenas atadas al scroll.
+- **Hero:** la foto de un almacén de ramos generales con el inventario anotado a mano. Hay una lámpara colgante nueva, la mecedora encerrada con un "se queda", la vitrina remarcada con "la restauramos", un cuadro nuevo con la cordillera, una alfombra y estrellas. Los trazos se dibujan solos al cargar la página.
+- **El logo como sello:** el monograma aparece en la barra, en Quiénes somos (rodeado de "guardamos / ordenamos / volvemos a usar") y en grande en el footer.
+- **Íconos y marcos a mano:** los servicios tienen íconos dibujados (sillón, casa, guirnalda, vidriera, cubo, globo de diálogo). Las fotos de proyectos llevan un marco dibujado, una cinta de papel y una nota manuscrita.
+- **Notas manuscritas** en Caveat donde un diseñador escribiría a mano sobre un plano.
 
 ---
 
 ## Decisiones de diseño
 
+### Logo
+
+El logo original (JPG) se vectorizó con `potrace` y quedó como SVG en `src/components/Logo.astro`. Toma el color del texto (`currentColor`), así que sirve sobre cualquier fondo: rojo sobre celeste en el sello, arena sobre bordó en el footer. El favicon es el mismo monograma sobre su celeste.
+
 ### Paleta
 
-Partimos de los dos colores de la marca y los usamos como **fondos enteros por capítulo**. Cada sección declara `data-tema` y el resto de los colores se heredan (ver `base.css`).
+Son los colores que pasó el estudio, medidos de las imágenes originales. Se usan como **fondos enteros por capítulo**: cada sección declara `data-tema` y el resto de los colores se heredan (ver `base.css`).
 
 | Token | Color | Uso |
 | --- | --- | --- |
-| `--ground` | `#F1F4F7` papel frío | Fondo de hero, Quiénes somos, Proyectos, Pedido |
-| `--ink` | `#8C2E21` rojo | Texto y acciones; fondo de la franja y de Qué hacemos |
-| `--field` | `#AFC8DE` celeste | Fondo de Cómo trabajamos, la planta, botón de WhatsApp |
-| `--field-pale` | `#DCE6EF` celeste pálido | Fondo de Preguntas frecuentes, láminas de proyectos |
-| `--ink-deep` | `#5E1D15` rojo oscuro | Texto sobre celeste, hover de botones |
-| `--ink-soft` | `#44596B` azul gris | Pies de foto y notas secundarias |
+| `--papel` | `#F8EDD7` | Fondo general (arena aclarada): hero, Quiénes somos, Preguntas |
+| `--arena` | `#EFD099` | Fondo de Proyectos y del pedido; texto sobre los fondos oscuros |
+| `--marron` | `#5F2E20` | Texto principal; fondo de Qué hacemos |
+| `--bordo` | `#7A113A` | Botones; fondo de la franja y del footer |
+| `--rojo` | `#832F27` | Rojo del logo: trazos, estrellas, notas |
+| `--celeste` | `#B3CEE1` | Celeste del logo: fondo de Cómo trabajamos, sello, preguntas abiertas |
+| `--oliva` | `#937B21` | Reservado para dibujos: no alcanza contraste para texto |
 
-Contrastes medidos (WCAG 2.2 AA): rojo sobre papel 7.5:1, papel sobre rojo 7.8:1, rojo oscuro sobre celeste 7.3:1, rojo sobre celeste pálido 6.6:1.
+Contrastes medidos (WCAG 2.2 AA): marrón sobre papel 9.6:1, arena sobre marrón 7.6:1, arena sobre bordó 7.2:1, marrón sobre celeste 6.9:1, marrón sobre arena 7.6:1.
 
 ### Tipografía
 
-- **Zodiak** (Fontshare, licencia libre): serif fina para titulares, en pesos 100 y 300.
-- **Hanken Grotesk** (OFL): sans neutra para el texto.
+- **Hanken Grotesk** (OFL, variable): titulares muy gruesos (800–900) y apretados, como en la referencia, y también el texto corrido.
+- **Caveat** (OFL): letra manuscrita, solo para notas y anotaciones.
 
-Usamos cinco tamaños en toda la página, con escalas fluidas (`clamp`) definidas en `tokens.css`. Las dos fuentes se sirven desde `public/fonts/` y se precargan.
+Las dos fuentes se sirven desde `public/fonts/` y se precargan.
 
-### Lo interactivo: "Tu inventario"
+### El sistema de dibujos
 
-En el pedido, además de elegir el espacio y el servicio, marcás qué hacer con cada cosa que ya tenés: **Se queda / Restaurar / Se va**. Eso viaja armado en el mensaje:
+- **Filtro de lápiz.** En el layout hay un filtro SVG (`#lapiz`: ruido + desplazamiento) que hace temblar apenas cada trazo, para que las líneas limpias del código parezcan hechas con marcador.
+- **Trazos que se dibujan.** Los trazos con `pathLength="1"` dentro de un contenedor `data-draw` se dibujan solos (`stroke-dashoffset`) cuando entran en pantalla, uno detrás del otro según `--d`.
+- **Coordenadas de la foto.** Las anotaciones del hero usan el mismo sistema de coordenadas que la foto (1920 × 1444) y el mismo recorte (`slice` / `object-fit: cover`), así que siempre caen sobre el objeto correcto.
+- **Celular.** Las notas que quedarían fuera del recorte vertical se ocultan (`.solo-ancho`) y aparece una versión ubicada dentro del recorte (`.solo-movil`).
 
-```
-Espacio: Local u oficina
-Necesito: Diseño de vidrieras
-Se queda: Mesas
-Restaurar: Sillones
-Se va: Estanterías
-```
+### El pedido
 
-Como no hay backend, *Enviar por email* abre un `mailto:` con asunto y cuerpo, y *Enviar por WhatsApp* abre `wa.me` con el mismo texto.
-
-### Reglas que seguimos
-
-Son las reglas de la casa de `design-taste-frontend`, que el inspector verifica:
-
-- Titulares en dos líneas como máximo.
-- Un solo `h1` y un título en cada sección.
-- Márgenes iguales a los dos lados.
-- Sin etiquetas chiquitas en mayúsculas encima de los títulos, sin numeración 01/02/03, sin líneas finas divisorias, sin degradados, sin sombras en reposo y sin tarjetas iguales con íconos.
+Elegís qué espacio es y qué necesitás. Cada opción elegida queda encerrada en un círculo de marcador dibujado. Como no hay backend, *Enviar por email* abre un `mailto:` con asunto y cuerpo armados, y *Enviar por WhatsApp* abre `wa.me` con el mismo texto.
 
 ---
 
 ## Animaciones
 
-Todo se anima solo con `transform`, `opacity` y `clip-path`. Con **movimiento reducido** activado en el sistema, todo el contenido queda visible y quieto: sin escenas fijadas, sin marquesina, sin texto entintándose.
+Todo se anima con `transform`, `opacity`, `clip-path` y el trazo de los SVG. Con **movimiento reducido** activado en el sistema, todo el contenido queda visible y quieto: los dibujos aparecen completos, sin escenas fijadas y sin marquesina.
 
 | Dónde | Qué pasa |
 | --- | --- |
-| Carga | El titular sube línea por línea y la foto grande se abre como un obturador mientras se asienta desde una escala mayor. |
-| Barra superior | Queda fija arriba y toma el color de la sección que tiene debajo (papel, rojo, celeste). |
-| Hero | Al bajar, las fotos descienden y se apagan, y el titular sube más rápido: el primer pantallazo "se retira". |
-| Franja | Marquesina roja con los tipos de trabajo. Se pausa al pasar el mouse. |
-| Quiénes somos | La bajada se entinta palabra por palabra mientras la leés. La foto del almacén tiene un parallax suave dentro de su marco. |
-| Qué hacemos | Al señalar un servicio, su descripción entra en el panel y el nombre se subraya con una barra que crece. |
-| Proyectos | En escritorio la sección se fija y el scroll vertical mueve la fila de fotos de lado. En celular es una fila con swipe y *snap*. |
-| Cómo trabajamos | La foto queda fija a la izquierda; el paso que cruza el centro de la pantalla se enciende, cambia la foto y actualiza "Paso N de 4". En celular cada paso lleva su foto. |
-| Botones | El hover rellena el botón desde la izquierda. Al apretarlo, se achica apenas. |
-| Pedido | Los chips dan un pequeño salto al marcarse; "Restaurar" y "Se va" tienen su propio color. |
-| Footer | La foto de la cordillera deriva muy lento. |
+| Carga | El titular sube línea por línea y las anotaciones del hero se dibujan sobre la foto, una detrás de otra. |
+| Barra superior | Queda fija y toma el color de la sección que tiene debajo. El logo gira un poco al pasar el mouse. |
+| Hero | Al bajar, el titular sube y se desvanece. |
+| Franja | Marquesina bordó con letra manuscrita. Las estrellas laten y giran; se pausa al pasar el mouse. |
+| Quiénes somos | La bajada se entinta palabra por palabra mientras la leés. El sello del logo gira con el scroll y sus tres notas se escriben alrededor. |
+| Qué hacemos | Cada ícono se dibuja al aparecer y se inclina al pasar el mouse. Los tildes del checklist se trazan uno por uno. |
+| Proyectos | En escritorio la sección se fija y el scroll mueve la fila de fotos de lado. Los marcos se dibujan y las fotos se inclinan al pasar el mouse. En celular es una fila con swipe. |
+| Cómo trabajamos | La foto queda fija y el paso que cruza el centro de la pantalla se enciende y la cambia ("Paso N de 4"). Un camino punteado se va trazando con el scroll. En celular cada paso lleva su foto. |
+| Preguntas | El "+" dibujado gira y pierde su trazo vertical al abrir; la fila se vuelve celeste. |
+| Pedido | Las opciones elegidas quedan encerradas en un círculo de marcador que se dibuja. |
+| Botones | El hover rellena el botón desde la izquierda; al apretarlo se achica apenas. |
 
 Las escenas de scroll usan `animation-timeline: view()`. En navegadores que todavía no lo soportan, la página se ve completa y estática.
 
 ## Accesibilidad
 
 - Objetivo **WCAG 2.2 AA**: contraste verificado, foco visible en todo y navegación completa con teclado.
+- Los dibujos son decorativos (`aria-hidden`). Lo que anotan está dicho también en el texto o en el pie de la foto.
 - El menú de celular es un `<details>` con el texto "Menú" para lectores de pantalla, y se cierra con Escape o al elegir una sección.
 - Todas las fotos tienen texto alternativo que dice qué muestran.
-- La descripción de cada servicio está en el HTML (los lectores de pantalla la leen aunque visualmente se muestre en el panel).
 - Respeta `prefers-reduced-motion`.
 
 ## Imágenes
 
 - **Propias del estudio:** stand de Altiér beauty (3 fotos) y Stand Trombetta (render, croquis y configuraciones). Los originales están en `material/`, que no se publica.
-- **Temporales de Unsplash (reemplazar):** la sala de la foto chica del hero y el café del primer paso de "Cómo trabajamos".
+- **Temporal de Unsplash (reemplazar):** el café del primer paso de "Cómo trabajamos".
 - **Archivos abiertos**, con licencia que permite uso comercial y crédito en el footer:
 
 | Imagen | Autor / fuente | Licencia |
@@ -197,30 +195,33 @@ Las escenas de scroll usan `animation-timeline: view()`. En navegadores que toda
 | Layetier, lámina de la Encyclopédie | Wellcome Collection | CC BY 4.0 |
 | Taller de carpintería, Stará Ľubovňa | Georges Jansoone (Wikimedia Commons) | CC BY 3.0 |
 | Acequias en Mendoza | Veronica Johansen (Wikimedia Commons) | CC BY-SA 3.0 |
-| Cordillera de los Andes, Mendoza | María Belén Sica (Wikimedia Commons) | CC BY-SA 4.0 |
 
-Estas imágenes muestran el mundo del oficio y de Mendoza. **Nunca se presentan como trabajos del estudio.** Los créditos se editan en `creditos` dentro de `src/data/contenido.ts`.
+Estas imágenes muestran el mundo del oficio y de Mendoza. **Nunca se presentan como trabajos del estudio.** El hero lo aclara en su pie: es un almacén de museo con las notas del estudio encima. Los créditos se editan en `creditos` dentro de `src/data/contenido.ts`.
 
 ## Pendientes antes de publicar
 
-- [ ] Reemplazar las dos fotos temporales de Unsplash por fotos propias.
+- [ ] Reemplazar la foto temporal de Unsplash (el café) por una foto propia.
+- [ ] Cuando haya una foto propia de un espacio "antes", usarla en el hero. Habría que volver a ubicar las anotaciones sobre ella: las coordenadas están en `Hero.astro`.
 - [ ] Confirmar los usuarios reales de Instagram y Pinterest (hoy son de muestra, en `contacto.redes`).
 - [ ] Confirmar los textos de servicios y preguntas frecuentes con el estudio.
-- [ ] Sumar fotos de casas o locales terminados cuando existan. No se inventan proyectos, testimonios ni cifras.
+- [ ] No se inventan proyectos, testimonios ni cifras.
 
 ## Cómo verificar cambios
 
 ```bash
 npm run build
 node .claude/skills/design-taste-frontend/scripts/lint.mjs src
-node .claude/skills/design-taste-frontend/scripts/inspect.mjs http://localhost:4321/
+node .claude/skills/design-taste-frontend/scripts/inspect.mjs http://localhost:4321/ --allow palette-claude
 ```
 
-El inspector abre la página en Chrome a 1440, 768 y 390 px, mide titulares, contraste, márgenes, huecos y movimiento, y guarda capturas en `.taste-skill/`. La última pasada dio **0 fallas** y 43 elementos en movimiento.
+El inspector abre la página en Chrome a 1440, 768 y 390 px, mide titulares, contraste, márgenes, huecos y movimiento, y guarda capturas en `.taste-skill/`.
 
-Los cuatro avisos que quedan son decisiones tomadas:
+Usamos `--allow palette-claude` porque el inspector marca "crema + terracota" como cliché genérico, pero acá es la paleta real de la marca.
+
+La última pasada dio **0 fallas** y 75 elementos en movimiento. Los avisos que quedan son decisiones tomadas:
 
 - No hay video porque el estudio todavía no tiene filmaciones propias.
 - La franja es más ancha que la pantalla.
-- La galería queda fijada unas tres pantallas.
+- La galería queda fijada unas pantallas.
 - En celular la fila de proyectos se desliza de lado.
+- Hay varios tamaños de letra por la mezcla de titulares y notas manuscritas.

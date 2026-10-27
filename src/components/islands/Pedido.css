@@ -6,19 +6,29 @@
 }
 
 .pedido__intro {
-  grid-column: 1 / span 4;
+  grid-column: 1 / span 5;
   position: sticky;
-  top: 32px;
+  top: calc(var(--bar-h) + 32px);
   display: grid;
-  gap: 24px;
+  gap: 20px;
 }
 
 .pedido__intro p {
   max-width: 34ch;
 }
 
+.pedido__intro .pedido__mano {
+  font-family: var(--mano);
+  font-weight: 700;
+  font-size: var(--step-nota);
+  line-height: 1;
+  color: var(--rojo);
+  rotate: -3deg;
+  transform-origin: left;
+}
+
 .pedido__campos {
-  grid-column: 6 / -1;
+  grid-column: 7 / -1;
   display: grid;
   gap: 40px;
 }
@@ -33,100 +43,81 @@
 .pedido legend {
   padding: 0;
   margin-bottom: 14px;
-  font-weight: 500;
+  font-weight: 800;
+  font-size: var(--step-lead);
+  letter-spacing: -0.02em;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px 8px;
 }
 
-.chip,
-.destino {
-  min-height: 44px;
-  padding: 0 16px;
+.chip {
+  position: relative;
+  min-height: 46px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 0;
-  background: var(--tone);
-  color: var(--ink);
-  font: 400 var(--step-body) / 1 var(--sans);
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--marron);
+  font: 600 var(--step-body) / 1 var(--sans);
   cursor: pointer;
   transition:
     transform 160ms var(--ease-out),
-    background-color 180ms ease,
-    color 180ms ease;
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
-.chip:active,
-.destino:active {
+.chip:active {
   transform: scale(0.97);
 }
 
-.chip[aria-pressed='true'],
-.destino[aria-pressed='true'] {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-/* Al marcarlo, el chip da un pequeño salto para confirmar el cambio. */
-@media (prefers-reduced-motion: no-preference) {
-  .chip[aria-pressed='true'],
-  .destino[aria-pressed='true'] {
-    animation: chip-marca 320ms var(--ease-out);
-  }
-}
-
-@keyframes chip-marca {
-  40% {
-    transform: scale(1.06);
-  }
-}
-
-/* Los destinos del inventario se distinguen por color al marcarse. */
-.destino[aria-pressed='true']:nth-child(2) {
-  background: var(--field);
-  color: var(--ink-deep);
-}
-
-.destino[aria-pressed='true']:nth-child(3) {
-  background: var(--ink-deep);
+.chip[aria-pressed='true'] {
+  background: var(--bordo);
+  color: var(--arena);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .chip[aria-pressed='false']:hover,
-  .destino[aria-pressed='false']:hover {
-    background: var(--field);
-    color: var(--ink-deep);
+  .chip[aria-pressed='false']:hover {
+    background: var(--celeste);
   }
 }
 
-.inventario__ayuda {
-  margin-bottom: 16px;
-  color: var(--ink-soft);
+/* El círculo de marcador se dibuja alrededor de la opción al elegirla. */
+.chip__circulo {
+  position: absolute;
+  inset: -8px -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 16px);
+  overflow: visible;
+  pointer-events: none;
+  filter: url(#lapiz);
 }
 
-.inventario ul {
-  display: grid;
-  gap: 6px;
+.chip__circulo path {
+  fill: none;
+  stroke: var(--rojo);
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  opacity: 0;
 }
 
-.pieza {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 8px 16px;
+.chip[aria-pressed='true'] .chip__circulo path {
+  stroke-dashoffset: 0;
+  opacity: 1;
 }
 
-.pieza__destinos {
-  display: flex;
-  gap: 4px;
-}
-
-.destino {
-  min-width: 104px;
-  padding: 0 12px;
-  font-size: var(--step-small);
+@media (prefers-reduced-motion: no-preference) {
+  .chip__circulo path {
+    transition:
+      stroke-dashoffset 600ms var(--ease-out),
+      opacity 80ms linear;
+  }
 }
 
 .pedido__datos {
@@ -135,7 +126,7 @@
 }
 
 .pedido__datos label {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .pedido__datos label:not(:first-child) {
@@ -143,37 +134,37 @@
 }
 
 .campo {
-  min-height: 52px;
-  padding: 0 16px;
+  min-height: 54px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 0;
-  border-bottom: 2px solid color-mix(in srgb, var(--ink) 30%, transparent);
-  background: var(--tone);
-  color: var(--ink);
+  border-radius: 14px;
+  background: var(--papel);
+  color: var(--marron);
   font: 400 var(--step-body) / 1.4 var(--sans);
-  caret-color: var(--ink);
-  transition: border-color 180ms ease;
+  caret-color: var(--rojo);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 180ms ease;
 }
 
 .campo:focus-visible {
-  outline: none;
-  border-bottom-color: var(--ink);
+  outline-color: var(--rojo);
 }
 
 .pedido__resumen {
-  color: var(--ink-soft);
+  color: var(--sec-soft);
 }
 
 .pedido__envio {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .btn--claro {
-  --btn-bg: var(--field);
-  --btn-ink: var(--ink-deep);
-  --btn-fill: color-mix(in srgb, var(--field) 70%, var(--ink-soft));
+  --btn-bg: var(--celeste);
+  --btn-ink: var(--marron);
+  --btn-fill: var(--papel);
 }
 
 @media (max-width: 960px) {
@@ -189,23 +180,6 @@
 }
 
 @media (max-width: 560px) {
-  .pieza {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .pieza__destinos {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .destino {
-    min-width: 0;
-  }
-
-  .pieza + .pieza {
-    margin-top: 10px;
-  }
-
   .pedido__envio .btn {
     width: 100%;
   }

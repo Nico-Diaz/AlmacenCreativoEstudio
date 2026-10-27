@@ -1,5 +1,5 @@
 function reveal() {
-  const targets = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-img]');
+  const targets = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-img], [data-draw]');
   document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
     Array.from(el.children).forEach((child, i) => {
       const c = child as HTMLElement;

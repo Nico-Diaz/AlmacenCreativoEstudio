@@ -139,10 +139,6 @@ export const pasos = [
   },
 ];
 
-// Piezas para el inventario del pedido: el cliente marca qué hace con cada una.
-export const piezas = ['Sillones', 'Mesas', 'Sillas', 'Estanterías', 'Lámparas', 'Cortinas y textiles'];
-export const destinos = ['Se queda', 'Restaurar', 'Se va'];
-
 // Imágenes de archivos abiertos: muestran el mundo del oficio, no trabajos del estudio.
 export const creditos = [
   {
@@ -174,12 +170,6 @@ export const creditos = [
     autor: 'Veronica Johansen',
     licencia: 'CC BY-SA 3.0',
     url: 'https://commons.wikimedia.org/wiki/File:Acequias_en_Mendoza_-_panoramio.jpg',
-  },
-  {
-    titulo: 'Cordillera de los Andes, Mendoza',
-    autor: 'María Belén Sica',
-    licencia: 'CC BY-SA 4.0',
-    url: 'https://commons.wikimedia.org/wiki/File:Cordillera_de_los_Andes,_Mendoza.JPG',
   },
 ];
 

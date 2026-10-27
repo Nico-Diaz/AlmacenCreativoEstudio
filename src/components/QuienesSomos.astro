@@ -1,57 +1,49 @@
 ---
-import { Image } from 'astro:assets';
-import almacen from '../assets/archivo/almacen.jpg';
+import Logo from './Logo.astro';
 import { datos } from '../data/contenido';
 ---
 
 <section class="nosotras wrap" id="nosotras" aria-labelledby="nosotras-t" data-tema="papel">
-  <div class="apertura">
-    <h2 id="nosotras-t">Quiénes somos</h2>
-    <p class="bajada" data-fill>
-      Trabajamos como un almacén de barrio: guardamos, ordenamos y volvemos a poner en uso. Antes de comprar nada
-      miramos lo que ya tenés, y diseñamos a partir de eso.
-    </p>
-  </div>
-
-  <div class="mosaico grid">
-    <figure class="foto">
-      <div class="foto__marco" data-reveal-img data-parallax>
-        <Image
-          src={almacen}
-          alt="Almacén de ramos generales: estantes con radios, máquinas de escribir, relojes y cajas de sombreros sobre un mostrador vidriado"
-          widths={[700, 1100, 1600]}
-          sizes="(max-width: 760px) 100vw, 62vw"
-          loading="lazy"
-        />
-      </div>
-      <p class="papel">
-        Somos tres diseñadoras con base en Mendoza. Escuchamos cómo se usa cada espacio y recién después dibujamos.
+  <div class="nosotras__grid">
+    <div class="texto">
+      <h2 id="nosotras-t">Quiénes somos</h2>
+      <p class="bajada" data-fill>
+        Trabajamos como un almacén de barrio: guardamos, ordenamos y volvemos a poner en uso lo que ya tenés.
       </p>
-      <figcaption class="nota">Un almacén de ramos generales, en el Museo Histórico de Casilda, Santa Fe.</figcaption>
-    </figure>
+      <p class="cuerpo">
+        Somos tres diseñadoras con base en Mendoza. Antes de comprar nada miramos lo que hay, escuchamos cómo se usa
+        cada espacio y recién después dibujamos: primero a mano, encima de lo que existe, y después en planos y renders.
+      </p>
+    </div>
 
-    <div class="lado">
-      <div class="plano" role="img" aria-label="Planta de una casa, con un punto en el ambiente donde empieza cada proyecto">
-        <svg viewBox="0 0 120 150" aria-hidden="true">
-          <path
-            fill="var(--ground)"
-            d="M10 10h100v44H62v44h48v42H10V98h24V54H10Z"
-          ></path>
-          <circle cx="34" cy="32" r="6" fill="var(--ink)"></circle>
-        </svg>
+    <!-- El sello: el monograma sobre el celeste del logo, con tres verbos escritos alrededor. -->
+    <div class="sello" data-draw>
+      <div class="sello__disco">
+        <Logo class="sello__logo" titulo="Logo de Almacen Creativo" />
       </div>
-      <dl class="datos" data-reveal>
-        {
-          datos.map((d) => (
-            <div>
-              <dt class="nota">{d.label}</dt>
-              <dd>{d.valor}</dd>
-            </div>
-          ))
-        }
-      </dl>
+      <svg class="trazos sello__notas" viewBox="0 0 600 600" aria-hidden="true">
+        <g class="t-bordo" style="--w:5">
+          <text x="16" y="70" font-size="54" style="--d:1">guardamos</text>
+          <path pathLength="1" style="--d:1" d="M150 92 C170 130 196 150 232 160 M232 160 L200 164 M232 160 L214 136"></path>
+          <text x="372" y="70" font-size="54" style="--d:2">ordenamos</text>
+          <path pathLength="1" style="--d:2" d="M480 92 C478 124 466 150 440 166 M440 166 L452 140 M440 166 L470 160"></path>
+          <text x="30" y="590" font-size="54" style="--d:3">volvemos a usar</text>
+          <path pathLength="1" style="--d:3" d="M120 540 C140 500 170 480 206 474 M206 474 L180 494 M206 474 L196 502"></path>
+        </g>
+      </svg>
     </div>
   </div>
+
+  <dl class="datos" data-reveal>
+    {
+      datos.map((d) => (
+        <div>
+          <dt class="mano">{d.label}</dt>
+          <dd>{d.valor}</dd>
+        </div>
+      ))
+    }
+  </dl>
 </section>
 
 <style>
@@ -59,117 +51,103 @@ import { datos } from '../data/contenido';
     padding-block: var(--section-gap);
   }
 
-  .apertura {
+  .nosotras__grid {
     display: grid;
-    gap: 24px;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 48px clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .texto {
+    display: grid;
+    gap: 28px;
   }
 
   .bajada {
-    max-width: 46ch;
-    font-size: var(--step-lead);
-    line-height: 1.4;
+    max-width: 38ch;
+    font-size: clamp(1.5rem, 1rem + 1.2vw, 2.125rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
   }
 
-  .mosaico {
-    margin-top: 72px;
-    align-items: start;
+  .cuerpo {
+    max-width: 48ch;
   }
 
-  .foto {
+  .sello {
     position: relative;
-    grid-column: 1 / span 8;
+    width: min(100%, 460px);
+    justify-self: center;
+    aspect-ratio: 1;
   }
 
-  .foto__marco {
-    overflow: hidden;
-  }
-
-  .foto :global(img) {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    object-position: 50% 40%;
-  }
-
-  .papel {
+  .sello__disco {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: min(320px, 46%);
-    padding: 20px;
-    background: var(--ground);
-    line-height: 1.45;
-  }
-
-  .foto figcaption {
-    margin-top: 12px;
-  }
-
-  .lado {
-    grid-column: 9 / span 4;
-    display: grid;
-    gap: 32px;
-  }
-
-  .plano {
+    inset: 16%;
     display: grid;
     place-items: center;
-    aspect-ratio: 4 / 3.6;
-    background: var(--field);
-    padding: 28px;
+    border-radius: 50%;
+    background: var(--celeste);
   }
 
-  .plano svg {
+  .sello :global(.sello__logo) {
+    width: 74%;
+    color: var(--rojo);
+  }
+
+  .sello__notas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    max-height: 220px;
-    width: auto;
+  }
+
+  /* El sello gira apenas con el scroll, como si alguien lo apoyara sobre el papel. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .sello__disco {
+        animation: sello-gira linear both;
+        animation-timeline: view();
+        animation-range: cover 10% cover 70%;
+      }
+    }
+  }
+
+  @keyframes sello-gira {
+    from {
+      transform: rotate(-24deg) scale(0.9);
+    }
+    to {
+      transform: rotate(6deg) scale(1);
+    }
   }
 
   .datos {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 16px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px var(--col-gap);
+    margin-top: clamp(56px, 7vw, 96px);
+  }
+
+  .datos dt {
+    color: var(--rojo);
   }
 
   .datos dd {
-    margin-top: 2px;
-    font-weight: 500;
+    margin-top: 4px;
+    font-size: var(--step-lead);
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
 
   @media (max-width: 960px) {
-    .foto {
-      grid-column: 1 / -1;
+    .nosotras__grid {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .lado {
-      grid-column: 1 / -1;
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-      margin-top: 24px;
-    }
-  }
-
-  @media (max-width: 760px) {
-    .mosaico {
-      margin-top: 40px;
-    }
-
-    .foto :global(img) {
-      aspect-ratio: 4 / 3;
-    }
-
-    .papel {
-      position: static;
-      width: auto;
-      padding: 16px 0 0;
-    }
-
-    .lado {
-      grid-template-columns: 1fr;
-    }
-
-    .plano {
-      aspect-ratio: 3 / 2;
+    .datos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

@@ -22,11 +22,11 @@ const piezas: Pieza[] = [
 ];
 ---
 
-<section class="proyectos" id="proyectos" aria-labelledby="proyectos-t" data-tema="papel" data-galeria>
+<section class="proyectos" id="proyectos" aria-labelledby="proyectos-t" data-tema="arena" data-galeria>
   <div class="escena">
     <div class="cabeza wrap">
       <h2 id="proyectos-t">Proyectos recientes</h2>
-      <p class="cabeza__ayuda nota">Dos stands de marca, de la idea al armado.</p>
+      <p class="cabeza__ayuda mano">dos stands de marca, de la idea al armado</p>
     </div>
     <ul class="pista" tabindex="0" aria-label="Fotos de los proyectos">
       {
@@ -34,7 +34,7 @@ const piezas: Pieza[] = [
           p.tipo === 'texto' ? (
             <li class="obra obra--texto">
               <h3>{p.titulo}</h3>
-              <p class="nota">{p.detalle}</p>
+              <p class="mano obra__detalle">{p.detalle}</p>
               <p class="obra__resumen">{p.resumen}</p>
             </li>
           ) : (
@@ -42,7 +42,7 @@ const piezas: Pieza[] = [
               class:list={['obra', { 'obra--lamina': p.foto.contain }]}
               style={`--k:${p.k};--ratio:${p.ratio};align-self:${p.pos}`}
             >
-              <figure>
+              <figure class="obra__fig" data-draw>
                 <div class="obra__marco">
                   <Image
                     src={p.foto.src}
@@ -52,9 +52,13 @@ const piezas: Pieza[] = [
                     loading="lazy"
                   />
                 </div>
+                <svg class="trazos obra__trazo" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path pathLength="1" style="--w:0.9" d="M-2.5 1.5 C30 -1.2 70 1 102.5 -1.8 C101 35 103.4 70 101.8 102.6 C70 101 30 103.6 -1.6 101.8 C0.8 70 -1.8 35 -2.5 1.5" />
+                </svg>
+                <span class="obra__cinta" aria-hidden="true" />
                 <figcaption>
                   <span class="obra__titulo">{p.titulo}</span>
-                  <span class="nota">{p.dato}</span>
+                  <span class="mano obra__dato">{p.dato}</span>
                 </figcaption>
               </figure>
             </li>
@@ -101,12 +105,16 @@ const piezas: Pieza[] = [
     scroll-snap-align: start;
   }
 
-  .obra figure {
+  /* Cada foto lleva un marco dibujado que se pasa del borde, una cinta de papel y su nota. */
+  .obra__fig {
+    position: relative;
     width: max-content;
+    padding: 14px 14px 0;
   }
 
   .obra__marco {
     overflow: hidden;
+    border-radius: 6px;
   }
 
   .obra :global(img) {
@@ -118,14 +126,53 @@ const piezas: Pieza[] = [
     transition: transform 700ms var(--ease-out);
   }
 
+  .obra__trazo {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: calc(100% - 12px);
+    height: calc(var(--alto) * var(--k) + 16px);
+    color: var(--bordo);
+  }
+
+  .obra__cinta {
+    position: absolute;
+    top: 0;
+    left: 24px;
+    width: 84px;
+    height: 26px;
+    background: color-mix(in srgb, var(--celeste) 80%, transparent);
+    rotate: -6deg;
+    transition: rotate 400ms var(--ease-out);
+  }
+
+  .obra:nth-child(3n) .obra__cinta {
+    left: auto;
+    right: 20px;
+    rotate: 7deg;
+    background: color-mix(in srgb, var(--papel) 85%, transparent);
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .obra:hover :global(img) {
-      transform: scale(1.04);
+      transform: scale(1.05);
+    }
+
+    .obra:hover .obra__fig {
+      rotate: -1deg;
+    }
+
+    .obra:hover .obra__cinta {
+      rotate: -12deg;
     }
   }
 
+  .obra__fig {
+    transition: rotate 500ms var(--ease-out);
+  }
+
   .obra--lamina .obra__marco {
-    background: var(--field-pale);
+    background: var(--papel);
   }
 
   .obra--lamina :global(img) {
@@ -137,32 +184,47 @@ const piezas: Pieza[] = [
   figcaption {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     gap: 16px;
-    margin-top: 12px;
+    margin-top: 14px;
     font-size: var(--step-small);
   }
 
   .obra__titulo {
-    font-weight: 500;
+    font-weight: 700;
+  }
+
+  .obra__dato {
+    font-size: clamp(1.25rem, 1rem + 0.6vw, 1.625rem);
+    color: var(--bordo);
   }
 
   .obra--texto {
-    width: min(78vw, 34ch);
+    width: min(78vw, 32ch);
     align-self: end;
     display: grid;
-    gap: 8px;
-    padding-bottom: 32px;
+    gap: 6px;
+    padding-bottom: 40px;
   }
 
   .obra--texto h3 {
-    font-family: var(--serif);
-    font-weight: 300;
     font-size: var(--step-head);
-    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+  }
+
+  .obra__detalle {
+    color: var(--rojo);
   }
 
   .obra__resumen {
     margin-top: 12px;
+  }
+
+  .cabeza__ayuda {
+    color: var(--rojo);
+    rotate: -2deg;
   }
 
   /* Escritorio con movimiento: la escena se fija y el scroll vertical corre la fila (lo mide motion.ts). */
