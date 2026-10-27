@@ -10,7 +10,7 @@ const grupos = [
 ];
 ---
 
-<section class="servicios wrap" id="servicios" aria-labelledby="servicios-t" data-indice>
+<section class="servicios wrap" id="servicios" aria-labelledby="servicios-t" data-indice data-tema="rojo">
   <h2 id="servicios-t">Qué hacemos</h2>
 
   <div class="indice grid">
@@ -22,7 +22,7 @@ const grupos = [
             {g.items.map((it) => (
               <li>
                 <button type="button" class="item" data-nombre={it.nombre} data-desc={it.desc}>
-                  {it.nombre}
+                  <span>{it.nombre}</span>
                 </button>
                 <span class="item__desc">{it.desc}</span>
               </li>
@@ -49,14 +49,8 @@ const grupos = [
     padding-block: var(--section-gap);
   }
 
-  h2 {
-    font-size: var(--step-lead);
-    font-family: var(--serif);
-    line-height: 1.2;
-  }
-
   .indice {
-    margin-top: 96px;
+    margin-top: clamp(56px, 7vw, 96px);
     align-items: start;
   }
 
@@ -79,7 +73,7 @@ const grupos = [
     padding: 3px 0;
     border: 0;
     background: none;
-    color: var(--ink-soft);
+    color: var(--sec-soft);
     font: 400 var(--step-body) / 1.3 var(--sans);
     text-align: left;
     cursor: default;
@@ -89,7 +83,30 @@ const grupos = [
   .item:hover,
   .item:focus-visible,
   .item.is-on {
-    color: var(--ink);
+    color: var(--sec-ink);
+  }
+
+  /* El ítem activo se subraya con una barra que crece desde la izquierda. */
+  .item span {
+    position: relative;
+    display: inline-block;
+  }
+
+  .item span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 360ms var(--ease-out);
+  }
+
+  .item.is-on span::after {
+    transform: scaleX(1);
   }
 
   /* Oculta a la vista en escritorio (el panel la muestra), pero la leen los lectores de pantalla. */
@@ -110,11 +127,14 @@ const grupos = [
 
   .panel__texto {
     min-height: 7.5em;
-    transition: opacity 220ms ease;
+    transition:
+      opacity 220ms ease,
+      transform 320ms var(--ease-out);
   }
 
   .panel__texto.is-swapping {
     opacity: 0;
+    transform: translateY(10px);
   }
 
   .panel__nombre {
@@ -123,7 +143,7 @@ const grupos = [
   }
 
   .panel__cierre {
-    color: var(--ink-soft);
+    color: var(--sec-soft);
   }
 
   @media (max-width: 960px) {
@@ -140,10 +160,14 @@ const grupos = [
     }
 
     .item {
-      color: var(--ink);
+      color: var(--sec-ink);
       font-weight: 500;
       padding-top: 14px;
       pointer-events: none;
+    }
+
+    .item span::after {
+      display: none;
     }
 
     .item__desc {
@@ -154,7 +178,7 @@ const grupos = [
       white-space: normal;
       display: block;
       max-width: 44ch;
-      color: var(--ink-soft);
+      color: var(--sec-soft);
       line-height: 1.45;
     }
   }

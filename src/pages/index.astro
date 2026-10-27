@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Franja from '../components/Franja.astro';
 import QuienesSomos from '../components/QuienesSomos.astro';
 import Servicios from '../components/Servicios.astro';
 import Proyectos from '../components/Proyectos.astro';
@@ -14,8 +16,10 @@ import Footer from '../components/Footer.astro';
   title="Almacen Creativo · Diseño de interiores en Mendoza"
   description="Equipo de diseñadoras en Mendoza: diseño de interiores, diseño inmobiliario, ambientación de eventos, vidrieras, renderizado y asesoramiento. Partimos de lo que ya tenés."
 >
+  <Header />
   <Hero />
   <main>
+    <Franja />
     <QuienesSomos />
     <Servicios />
     <Proyectos />

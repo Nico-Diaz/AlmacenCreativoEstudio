@@ -1,14 +1,11 @@
 ---
 import { Image } from 'astro:assets';
-import Header from './Header.astro';
 import stand from '../assets/fotos/trombetta-stand.jpg';
 import pared from '../assets/fotos/altier-pared.jpg';
 import sala from '../assets/fotos/pinotea-a.jpg';
 ---
 
-<header class="hero" id="inicio">
-  <Header />
-
+<header class="hero" id="inicio" data-tema="papel">
   <div class="riel wrap grid">
     <figure class="copia copia--chica">
       <Image
@@ -62,10 +59,59 @@ import sala from '../assets/fotos/pinotea-a.jpg';
 </header>
 
 <style>
+  .hero {
+    position: relative;
+    overflow: clip;
+    padding-bottom: clamp(48px, 7vw, 96px);
+    view-timeline-name: --hero;
+  }
+
   .riel {
     padding-top: clamp(16px, 5vh, 56px);
     grid-template-rows: auto 1fr;
     align-items: start;
+  }
+
+  /* Al salir, las copias bajan un poco y se apagan, y el titular sube algo más rápido. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .copia {
+        animation: copia-baja linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 100%;
+      }
+
+      .copia--chica {
+        animation-name: copia-sube;
+      }
+
+      .titular {
+        animation: titular-sube linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 70%;
+      }
+    }
+  }
+
+  @keyframes copia-baja {
+    to {
+      transform: translateY(7%);
+      opacity: 0.55;
+    }
+  }
+
+  @keyframes copia-sube {
+    to {
+      transform: translateY(-14%);
+      opacity: 0.55;
+    }
+  }
+
+  @keyframes titular-sube {
+    to {
+      transform: translateY(-18%);
+      opacity: 0;
+    }
   }
 
   .copia :global(img) {
@@ -202,7 +248,7 @@ import sala from '../assets/fotos/pinotea-a.jpg';
     }
 
     .copia--ancha figcaption {
-      padding-inline: var(--gutter);
+      display: none;
     }
   }
 

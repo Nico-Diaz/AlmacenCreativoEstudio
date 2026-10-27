@@ -114,7 +114,61 @@ a {
   color: var(--ink-soft);
 }
 
+/* Temas por capítulo: cada sección redefine fondo y tintas, y el resto los hereda. */
+[data-tema] {
+  background: var(--sec-bg);
+  color: var(--sec-ink);
+}
+
+[data-tema='papel'] {
+  --sec-bg: var(--ground);
+  --sec-ink: var(--ink);
+  --sec-soft: var(--ink-soft);
+  --btn-bg: var(--ink);
+  --btn-ink: var(--paper);
+  --btn-fill: var(--ink-deep);
+}
+
+[data-tema='rojo'] {
+  --sec-bg: var(--ink);
+  --sec-ink: var(--paper);
+  --sec-soft: var(--field);
+  --btn-bg: var(--paper);
+  --btn-ink: var(--ink);
+  --btn-fill: var(--field);
+}
+
+[data-tema='celeste'] {
+  --sec-bg: var(--field);
+  --sec-ink: var(--ink-deep);
+  --sec-soft: var(--ink-deep);
+  --btn-bg: var(--ink-deep);
+  --btn-ink: var(--paper);
+  --btn-fill: var(--ink);
+}
+
+[data-tema='palido'] {
+  --sec-bg: var(--field-pale);
+  --sec-ink: var(--ink);
+  --sec-soft: var(--ink-soft);
+  --btn-bg: var(--ink);
+  --btn-ink: var(--paper);
+  --btn-fill: var(--ink-deep);
+}
+
+[data-tema] .nota {
+  color: var(--sec-soft);
+}
+
+section[id] {
+  scroll-margin-top: var(--bar-h);
+}
+
+/* El hover rellena el botón desde la izquierda con el color de relleno del tema. */
 .btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -122,15 +176,26 @@ a {
   padding: 0 24px;
   border: 0;
   border-radius: 0;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--btn-bg, var(--ink));
+  color: var(--btn-ink, var(--paper));
   font: 500 var(--step-body) / 1 var(--sans);
   text-decoration: none;
   cursor: pointer;
   transition:
     transform 160ms var(--ease-out),
-    background-color 180ms ease;
+    color 260ms ease;
   user-select: none;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill, var(--ink-deep));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-out);
 }
 
 .btn:active {
@@ -138,9 +203,13 @@ a {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover {
-    background: var(--ink-deep);
+  .btn:hover::before {
+    transform: scaleX(1);
   }
+}
+
+.btn:focus-visible::before {
+  transform: scaleX(1);
 }
 
 .link {

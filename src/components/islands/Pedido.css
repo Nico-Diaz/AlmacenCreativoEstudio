@@ -69,10 +69,35 @@
   color: var(--paper);
 }
 
+/* Al marcarlo, el chip da un pequeño salto para confirmar el cambio. */
+@media (prefers-reduced-motion: no-preference) {
+  .chip[aria-pressed='true'],
+  .destino[aria-pressed='true'] {
+    animation: chip-marca 320ms var(--ease-out);
+  }
+}
+
+@keyframes chip-marca {
+  40% {
+    transform: scale(1.06);
+  }
+}
+
+/* Los destinos del inventario se distinguen por color al marcarse. */
+.destino[aria-pressed='true']:nth-child(2) {
+  background: var(--field);
+  color: var(--ink-deep);
+}
+
+.destino[aria-pressed='true']:nth-child(3) {
+  background: var(--ink-deep);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .chip[aria-pressed='false']:hover,
   .destino[aria-pressed='false']:hover {
-    background: color-mix(in srgb, var(--field) 55%, var(--tone));
+    background: var(--field);
+    color: var(--ink-deep);
   }
 }
 
@@ -146,15 +171,9 @@
 }
 
 .btn--claro {
-  background: var(--field);
-  color: var(--ink-deep);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .btn--claro:hover {
-    background: color-mix(in srgb, var(--field) 80%, var(--ink-soft));
-    color: var(--ink-deep);
-  }
+  --btn-bg: var(--field);
+  --btn-ink: var(--ink-deep);
+  --btn-fill: color-mix(in srgb, var(--field) 70%, var(--ink-soft));
 }
 
 @media (max-width: 960px) {

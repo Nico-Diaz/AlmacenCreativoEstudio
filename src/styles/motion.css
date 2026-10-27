@@ -68,6 +68,47 @@
   }
 }
 
+/* Escenas atadas al scroll: solo donde el navegador tiene scroll timelines. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Frase que se entinta palabra por palabra mientras sube por la pantalla. */
+    .is-filling > span {
+      display: inline-block;
+      color: color-mix(in oklab, currentColor 45%, transparent);
+      animation: entinta linear both;
+      animation-timeline: view();
+      animation-range: cover 18% cover 42%;
+    }
+
+    /* Parallax: la foto se desliza dentro de su marco, menos del 8% de su alto. */
+    [data-parallax] {
+      overflow: hidden;
+    }
+
+    [data-parallax] img {
+      scale: 1.12;
+      animation: deriva-vertical linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes entinta {
+  to {
+    color: var(--sec-ink, currentColor);
+  }
+}
+
+@keyframes deriva-vertical {
+  from {
+    translate: 0 -5%;
+  }
+  to {
+    translate: 0 5%;
+  }
+}
+
 @keyframes linea-sube {
   to {
     transform: none;

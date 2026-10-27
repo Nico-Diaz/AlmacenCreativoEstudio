@@ -41,7 +41,7 @@ Primer contacto por email o WhatsApp; luego visita, propuesta, proyecto y obra. 
 ## Brand Commitments
 
 - Nombre: Almacen Creativo.
-- Colores de la marca: celeste `#AFC8DE` y rojo `#8C2E21`. Desde el rediseño minimalista (octubre 2026) el fondo es un papel frío claro `#F1F4F7`; el rojo es la tinta del texto y las acciones, y el celeste queda para bloques (la sección Proceso, la planta de Quiénes somos).
+- Colores de la marca: celeste `#AFC8DE` y rojo `#8C2E21`. Desde el rediseño minimalista (octubre 2026) el fondo es un papel frío claro `#F1F4F7`; el rojo es la tinta del texto y las acciones, y además fondo entero de la franja y de Qué hacemos; el celeste es fondo de Proceso y el celeste pálido `#DCE6EF` de Preguntas. Cada sección declara `data-tema` y la barra fija toma ese color.
 - Tipografía: Zodiak (titulares, serif fina) y Hanken Grotesk (texto), servidas desde `public/fonts/`.
 - Idioma: español rioplatense, trato de "vos".
 

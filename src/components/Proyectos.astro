@@ -6,198 +6,192 @@ const [altier, trombetta] = proyectos;
 const [, ruleta, marca] = altier.fotos;
 const [stand, croquis, config] = trombetta.fotos;
 
-const tiles = [
-  { foto: marca, cls: 't-marca', titulo: altier.titulo, dato: altier.detalle, resumen: altier.resumen },
-  { foto: ruleta, cls: 't-ruleta', titulo: altier.titulo, dato: 'Ruleta de premios' },
-  { foto: croquis, cls: 't-croquis', titulo: trombetta.titulo, dato: 'Croquis y materiales', resumen: trombetta.resumen },
-  { foto: stand, cls: 't-stand', titulo: trombetta.titulo, dato: trombetta.detalle },
-  { foto: config, cls: 't-config', titulo: trombetta.titulo, dato: 'Tres configuraciones del stand' },
+// Cada pieza cuelga a su tamaño (k = fracción del alto de la escena) y a su altura (pos).
+type Pieza =
+  | { tipo: 'texto'; titulo: string; detalle: string; resumen: string }
+  | { tipo: 'foto'; foto: (typeof altier.fotos)[number]; titulo: string; dato: string; k: number; ratio: string; pos: string };
+
+const piezas: Pieza[] = [
+  { tipo: 'texto', titulo: altier.titulo, detalle: altier.detalle, resumen: altier.resumen },
+  { tipo: 'foto', foto: marca, titulo: altier.titulo, dato: 'Cartel sobre cortinado', k: 1, ratio: '3 / 2', pos: 'start' },
+  { tipo: 'foto', foto: ruleta, titulo: altier.titulo, dato: 'Ruleta de premios', k: 0.74, ratio: '4 / 5', pos: 'end' },
+  { tipo: 'texto', titulo: trombetta.titulo, detalle: trombetta.detalle, resumen: trombetta.resumen },
+  { tipo: 'foto', foto: stand, titulo: trombetta.titulo, dato: 'Render en el torneo', k: 0.88, ratio: '3 / 2', pos: 'center' },
+  { tipo: 'foto', foto: croquis, titulo: trombetta.titulo, dato: 'Croquis y materiales', k: 0.7, ratio: '4 / 5', pos: 'start' },
+  { tipo: 'foto', foto: config, titulo: trombetta.titulo, dato: 'Tres configuraciones', k: 0.66, ratio: '3 / 2', pos: 'end' },
 ];
 ---
 
-<section class="proyectos wrap" id="proyectos" aria-labelledby="proyectos-t">
-  <div class="muro">
-    <h2 id="proyectos-t" class="t-titulo">
-      <span>Proyectos</span>
-      <span>recientes</span>
-    </h2>
-    {
-      tiles.map((t) => (
-        <figure class:list={['tile', t.cls, { 'tile--lamina': t.foto.contain }]}>
-          <div class="tile__marco" data-reveal-img>
-            <Image
-              src={t.foto.src}
-              alt={t.foto.alt}
-              widths={[500, 900, 1400]}
-              sizes="(max-width: 760px) 90vw, 46vw"
-              loading="lazy"
-            />
-          </div>
-          <figcaption>
-            <span class="tile__titulo">{t.titulo}</span>
-            <span class="nota">{t.dato}</span>
-          </figcaption>
-          {t.resumen && <p class="tile__resumen">{t.resumen}</p>}
-        </figure>
-      ))
-    }
+<section class="proyectos" id="proyectos" aria-labelledby="proyectos-t" data-tema="papel" data-galeria>
+  <div class="escena">
+    <div class="cabeza wrap">
+      <h2 id="proyectos-t">Proyectos recientes</h2>
+      <p class="cabeza__ayuda nota">Dos stands de marca, de la idea al armado.</p>
+    </div>
+    <ul class="pista" tabindex="0" aria-label="Fotos de los proyectos">
+      {
+        piezas.map((p) =>
+          p.tipo === 'texto' ? (
+            <li class="obra obra--texto">
+              <h3>{p.titulo}</h3>
+              <p class="nota">{p.detalle}</p>
+              <p class="obra__resumen">{p.resumen}</p>
+            </li>
+          ) : (
+            <li
+              class:list={['obra', { 'obra--lamina': p.foto.contain }]}
+              style={`--k:${p.k};--ratio:${p.ratio};align-self:${p.pos}`}
+            >
+              <figure>
+                <div class="obra__marco">
+                  <Image
+                    src={p.foto.src}
+                    alt={p.foto.alt}
+                    widths={[500, 900, 1400]}
+                    sizes="(max-width: 900px) 80vw, 50vw"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption>
+                  <span class="obra__titulo">{p.titulo}</span>
+                  <span class="nota">{p.dato}</span>
+                </figcaption>
+              </figure>
+            </li>
+          ),
+        )
+      }
+    </ul>
   </div>
 </section>
 
 <style>
   .proyectos {
-    padding-bottom: var(--section-gap);
+    --alto: min(400px, 56svh);
+    padding-block: var(--section-gap);
   }
 
-  .muro {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(40px, 5vw, 72px) 16px;
-    align-items: start;
+  .cabeza {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px 32px;
   }
 
-  .t-titulo {
-    grid-column: 3;
-    grid-row: 1;
-    align-self: end;
-    padding-bottom: 56px;
-    font-size: clamp(2.25rem, 1rem + 3vw, 3.5rem);
+  /* Base: fila nativa con swipe y snap (celular, ventanas angostas y movimiento reducido). */
+  .pista {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(20px, 3vw, 48px);
+    margin-top: clamp(40px, 5vw, 64px);
+    padding: 0 var(--gutter) 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
   }
 
-  .t-titulo span {
-    display: block;
+  .pista::-webkit-scrollbar {
+    display: none;
   }
 
-  .t-marca {
-    grid-column: 1 / span 2;
-    grid-row: 1;
+  .obra {
+    flex: none;
+    scroll-snap-align: start;
   }
 
-  .t-ruleta {
-    grid-column: 4;
-    grid-row: 1;
+  .obra figure {
+    width: max-content;
   }
 
-  .t-croquis {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  .t-stand {
-    grid-column: 3;
-    grid-row: 2;
-    margin-top: 96px;
-  }
-
-  .t-config {
-    grid-column: 3 / span 2;
-    grid-row: 3;
-  }
-
-  .tile__marco {
+  .obra__marco {
     overflow: hidden;
   }
 
-  .tile :global(img) {
-    width: 100%;
-    aspect-ratio: 4 / 5;
+  .obra :global(img) {
+    display: block;
+    height: calc(var(--alto) * var(--k));
+    width: auto;
+    aspect-ratio: var(--ratio);
     object-fit: cover;
+    transition: transform 700ms var(--ease-out);
   }
 
-  .t-marca :global(img),
-  .t-config :global(img) {
-    aspect-ratio: 3 / 2;
+  @media (hover: hover) and (pointer: fine) {
+    .obra:hover :global(img) {
+      transform: scale(1.04);
+    }
   }
 
-  .t-marca :global(img) {
-    object-position: 50% 30%;
+  .obra--lamina .obra__marco {
+    background: var(--field-pale);
   }
 
-  .t-stand :global(img) {
-    object-position: 50% 60%;
-  }
-
-  .tile--lamina .tile__marco {
-    background: var(--tone);
-  }
-
-  .tile--lamina :global(img) {
+  .obra--lamina :global(img) {
     object-fit: contain;
-    padding: 12%;
+    padding: 10%;
     mix-blend-mode: multiply;
   }
 
   figcaption {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 4px 16px;
+    gap: 16px;
     margin-top: 12px;
     font-size: var(--step-small);
   }
 
-  .tile__titulo {
+  .obra__titulo {
     font-weight: 500;
   }
 
-  .tile__resumen {
-    margin-top: 16px;
-    max-width: 40ch;
+  .obra--texto {
+    width: min(78vw, 34ch);
+    align-self: end;
+    display: grid;
+    gap: 8px;
+    padding-bottom: 32px;
   }
 
-  @media (max-width: 960px) {
-    .muro {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 10px;
-      row-gap: 40px;
-    }
+  .obra--texto h3 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: var(--step-head);
+    line-height: 1;
+  }
 
-    .t-titulo {
-      grid-column: 1 / -1;
-      grid-row: auto;
-      padding-bottom: 0;
-      font-size: var(--step-head);
-    }
+  .obra__resumen {
+    margin-top: 12px;
+  }
 
-    .t-marca,
-    .t-config {
-      grid-column: 1 / -1;
-      grid-row: auto;
-    }
+  /* Escritorio con movimiento: la escena se fija y el scroll vertical corre la fila (lo mide motion.ts). */
+  .proyectos.is-pinned {
+    padding-block: 0;
+  }
 
-    .t-ruleta {
-      grid-column: 2;
-      grid-row: auto;
-    }
+  .proyectos.is-pinned .escena {
+    position: sticky;
+    top: var(--bar-h);
+    height: calc(100svh - var(--bar-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: clip;
+  }
 
-    .t-croquis {
-      grid-column: 1 / -1;
-      grid-row: auto;
-    }
+  .proyectos.is-pinned .pista {
+    --alto: min(54svh, 580px);
+    overflow: visible;
+    scroll-snap-type: none;
+    align-items: stretch;
+    min-height: calc(var(--alto) + 48px);
+    will-change: transform;
+  }
 
-    .t-croquis :global(img) {
-      aspect-ratio: 3 / 2;
-    }
-
-    .t-stand {
-      grid-column: 2;
-      grid-row: auto;
-      margin-top: 0;
-    }
-
-    .t-croquis,
-    .t-stand {
-      align-self: start;
-    }
-
-    .tile__resumen {
-      grid-column: 1 / -1;
-    }
-
-    figcaption {
-      flex-direction: column;
-      gap: 2px;
+  @media (max-width: 760px) {
+    .obra--texto h3 {
+      font-size: var(--step-lead);
     }
   }
 </style>

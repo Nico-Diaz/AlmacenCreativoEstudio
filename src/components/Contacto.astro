@@ -7,12 +7,12 @@ import { contacto, piezas, destinos } from '../data/contenido';
 const wa = `https://wa.me/${contacto.whatsapp}`;
 ---
 
-<section class="contacto wrap" id="contacto" aria-labelledby="contacto-t">
+<section class="contacto wrap" id="contacto" aria-labelledby="contacto-t" data-tema="papel">
   <Pedido client:visible email={contacto.email} whatsapp={contacto.whatsapp} piezas={piezas} destinos={destinos} />
 
   <div class="banda grid">
     <p class="frase">Escribinos por tu casa, tu local, tu vidriera o tu evento.</p>
-    <div class="retrato">
+    <div class="retrato" data-parallax>
       <Image
         src={acequia}
         alt="Acequia de Mendoza con piedras, una baranda negra y enredadera"

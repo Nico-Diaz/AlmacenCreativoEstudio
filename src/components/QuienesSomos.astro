@@ -4,10 +4,10 @@ import almacen from '../assets/archivo/almacen.jpg';
 import { datos } from '../data/contenido';
 ---
 
-<section class="nosotras wrap" id="nosotras" aria-labelledby="nosotras-t">
-  <div class="apertura" data-reveal>
+<section class="nosotras wrap" id="nosotras" aria-labelledby="nosotras-t" data-tema="papel">
+  <div class="apertura">
     <h2 id="nosotras-t">Quiénes somos</h2>
-    <p class="bajada">
+    <p class="bajada" data-fill>
       Trabajamos como un almacén de barrio: guardamos, ordenamos y volvemos a poner en uso. Antes de comprar nada
       miramos lo que ya tenés, y diseñamos a partir de eso.
     </p>
@@ -15,7 +15,7 @@ import { datos } from '../data/contenido';
 
   <div class="mosaico grid">
     <figure class="foto">
-      <div class="foto__marco" data-reveal-img>
+      <div class="foto__marco" data-reveal-img data-parallax>
         <Image
           src={almacen}
           alt="Almacén de ramos generales: estantes con radios, máquinas de escribir, relojes y cajas de sombreros sobre un mostrador vidriado"
@@ -56,7 +56,7 @@ import { datos } from '../data/contenido';
 
 <style>
   .nosotras {
-    padding-top: var(--section-gap);
+    padding-block: var(--section-gap);
   }
 
   .apertura {

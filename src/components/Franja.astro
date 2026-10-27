@@ -1,0 +1,66 @@
+---
+const palabras = ['Casas', 'Locales', 'Vidrieras', 'Eventos', 'Propiedades', 'Renders', 'Asesorías'];
+// La fila se repite dos veces para que el loop no tenga corte.
+const fila = [...palabras, ...palabras];
+---
+
+<div class="franja" data-tema="rojo">
+  <div class="franja__pista" aria-hidden="true">
+    {
+      fila.map((p) => (
+        <span class="franja__item">
+          {p}
+          <svg viewBox="0 0 10 10" class="franja__punto">
+            <circle cx="5" cy="5" r="5" />
+          </svg>
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .franja {
+    overflow: clip;
+    padding-block: clamp(20px, 2.6vw, 36px);
+  }
+
+  .franja__pista {
+    display: flex;
+    width: max-content;
+  }
+
+  .franja__item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(20px, 2.4vw, 40px);
+    padding-right: clamp(20px, 2.4vw, 40px);
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: var(--step-head);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .franja__punto {
+    width: 0.22em;
+    height: 0.22em;
+    fill: var(--field);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .franja__pista {
+      animation: franja-corre 38s linear infinite;
+    }
+
+    .franja:hover .franja__pista {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes franja-corre {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

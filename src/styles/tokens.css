@@ -27,6 +27,7 @@
   --ground: #f1f4f7;
   --tone: #e3eaf1;
   --field: #afc8de;
+  --field-pale: #dce6ef;
   --ink: #8c2e21;
   --ink-deep: #5e1d15;
   --ink-soft: #44596b;
@@ -45,6 +46,8 @@
   --gutter: clamp(20px, 5vw, 80px);
   --col-gap: clamp(12px, 1.6vw, 24px);
   --section-gap: clamp(112px, 13vw, 220px);
+
+  --bar-h: 72px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);

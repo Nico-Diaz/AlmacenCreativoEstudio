@@ -11,47 +11,70 @@ const fotos = [
     src: local,
     alt: 'Café con una mesa larga de madera, dos tazas y una ventana a la calle',
     nota: 'El espacio como está.',
+    pos: '50% 60%',
   },
   {
     src: sala,
     alt: 'Grabado de 1793 con la planta de una sala y sus cuatro paredes desplegadas alrededor',
     nota: 'Planta y alzados de una sala, Thomas Sheraton, 1793.',
+    pos: '50% 45%',
   },
   {
     src: layetier,
     alt: 'Grabado de un taller de carpintería con bancos de trabajo y herramientas dibujados a escala',
     nota: 'Lámina de taller de la Encyclopédie.',
+    pos: '50% 20%',
   },
   {
     src: taller,
     alt: 'Banco de carpintero con herramientas colgadas en la pared y tablas sobre la mesa',
     nota: 'Un taller de carpintería.',
+    pos: '60% 50%',
   },
 ];
 ---
 
-<section class="proceso wrap" id="proceso" aria-labelledby="proceso-t">
-  <div class="diagonal grid">
-    <h2 id="proceso-t">Cómo trabajamos</h2>
-    <ol class="pasos">
+<section class="proceso wrap" id="proceso" aria-labelledby="proceso-t" data-tema="celeste" data-pasos>
+  <h2 id="proceso-t">Cómo trabajamos</h2>
+
+  <div class="sostenida">
+    <div class="sostenida__media">
+      <div class="sostenida__fotos">
+        {
+          fotos.map((f, i) => (
+            <figure class:list={['foto', { 'is-on': i === 0 }]} data-foto-paso={i}>
+              <Image
+                src={f.src}
+                alt={f.alt}
+                widths={[600, 1000, 1400]}
+                sizes="(max-width: 900px) 92vw, 54vw"
+                loading="lazy"
+                style={`object-position:${f.pos}`}
+              />
+              <figcaption class="nota">{f.nota}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <p class="sostenida__cuenta" aria-hidden="true" data-cuenta>Paso 1 de {pasos.length}</p>
+    </div>
+
+    <ol class="sostenida__pasos">
       {
         pasos.map((p, i) => (
-          <li class={`paso paso--${i + 1}`}>
-            <figure>
-              <div class="paso__marco" data-reveal-img>
-                <Image
-                  src={fotos[i].src}
-                  alt={fotos[i].alt}
-                  widths={[500, 900, 1300]}
-                  sizes="(max-width: 760px) 90vw, 40vw"
-                  loading="lazy"
-                />
-              </div>
-              <figcaption class="nota">{fotos[i].nota}</figcaption>
+          <li class:list={['paso', { 'is-active': i === 0 }]} data-paso={i}>
+            <figure class="paso__foto">
+              <Image
+                src={fotos[i].src}
+                alt={fotos[i].alt}
+                widths={[500, 900]}
+                sizes="92vw"
+                loading="lazy"
+                style={`object-position:${fotos[i].pos}`}
+              />
             </figure>
-            <p class="paso__texto">
-              <strong>{p.linea}</strong> {p.detalle}
-            </p>
+            <h3>{p.linea}</h3>
+            <p>{p.detalle}</p>
           </li>
         ))
       }
@@ -61,184 +84,173 @@ const fotos = [
 
 <style>
   .proceso {
-    background: var(--field);
-    color: var(--ink-deep);
     padding-block: var(--section-gap);
   }
 
-  .proceso .nota {
-    color: var(--ink-deep);
-  }
-
-  .diagonal {
-    align-items: start;
-  }
-
-  h2 {
-    grid-column: 9 / -1;
-    grid-row: 1;
-  }
-
-  .pasos {
-    display: contents;
-  }
-
-  .paso {
+  .sostenida {
     display: grid;
-    grid-template-columns: subgrid;
-    align-items: start;
+    grid-template-columns: 7fr 5fr;
+    column-gap: clamp(32px, 6vw, 96px);
+    margin-top: clamp(40px, 5vw, 72px);
   }
 
-  .paso figure {
-    min-width: 0;
+  /* Sin JS: dos columnas planas, cada foto sobre su pie. */
+  .sostenida__media {
+    align-self: start;
   }
 
-  .paso__marco {
-    overflow: hidden;
+  .sostenida__fotos {
+    display: grid;
+    gap: 32px;
   }
 
-  .paso :global(img) {
+  .foto :global(img) {
     width: 100%;
+    aspect-ratio: 4 / 3;
     object-fit: cover;
   }
 
-  .paso figcaption {
+  .foto figcaption {
     margin-top: 10px;
   }
 
-  .paso__texto {
+  .sostenida__cuenta {
+    display: none;
+  }
+
+  .paso {
+    min-height: 70svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .paso h3 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: var(--step-head);
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .paso p {
     max-width: 36ch;
   }
 
-  .paso__texto strong {
-    font-weight: 600;
+  /* Con JS: la foto queda sostenida y los pasos pasan; el del medio de la pantalla se enciende. */
+  :global(.js) .sostenida__media {
+    position: sticky;
+    top: var(--bar-h);
+    height: calc(100svh - var(--bar-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
   }
 
-  /* Primero: retrato a la izquierda, texto a su derecha. */
-  .paso--1 {
-    grid-column: 1 / span 8;
-    grid-row: 1 / span 2;
+  :global(.js) .sostenida__fotos {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    max-height: 68svh;
   }
 
-  .paso--1 figure {
-    grid-column: 1 / span 4;
+  :global(.js) .foto {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 520ms ease;
   }
 
-  .paso--1 .paso__texto {
-    grid-column: 5 / span 4;
-    padding-top: 4px;
+  :global(.js) .foto :global(img) {
+    height: 100%;
+    aspect-ratio: auto;
+    transform: scale(1.06);
+    transition: transform 1200ms var(--ease-out);
   }
 
-  .paso--1 :global(img) {
-    aspect-ratio: 3 / 4;
+  :global(.js) .foto figcaption {
+    position: absolute;
+    top: 100%;
   }
 
-  /* Segundo: cuadrado más abajo, texto a su derecha. */
-  .paso--2 {
-    grid-column: 6 / -1;
-    grid-row: 2;
-    margin-top: clamp(120px, 15vw, 220px);
+  :global(.js) .foto.is-on {
+    opacity: 1;
   }
 
-  .paso--2 figure {
-    grid-column: 1 / span 3;
+  :global(.js) .foto.is-on :global(img) {
+    transform: none;
   }
 
-  .paso--2 .paso__texto {
-    grid-column: 4 / span 4;
+  :global(.js) .sostenida__cuenta {
+    display: block;
+    margin-top: 28px;
+    font-weight: 500;
   }
 
-  .paso--2 :global(img) {
-    aspect-ratio: 1;
-    object-position: 50% 45%;
+  :global(.js) .paso {
+    opacity: 0.4;
+    transition: opacity 400ms ease;
   }
 
-  /* Tercero: apaisado a la derecha, texto a su izquierda. */
-  .paso--3 {
-    grid-column: 3 / -1;
-    grid-row: 3;
-    margin-top: clamp(80px, 12vw, 180px);
+  :global(.js) .paso.is-active {
+    opacity: 1;
   }
 
-  .paso--3 .paso__texto {
-    grid-column: 1 / span 4;
-    grid-row: 1;
-    justify-self: end;
+  /* La copia de la foto dentro de cada paso solo se usa en pantallas chicas. */
+  .paso__foto {
+    display: none;
   }
 
-  .paso--3 figure {
-    grid-column: 6 / span 5;
-    grid-row: 1;
-  }
+  /* Tablet y celular: nada fijo; cada paso lleva su foto arriba, con alturas alternadas. */
+  @media (max-width: 900px) {
+    .sostenida {
+      display: block;
+    }
 
-  .paso--3 :global(img) {
-    aspect-ratio: 16 / 10;
-    object-position: 50% 18%;
-  }
+    .sostenida__media,
+    :global(.js) .sostenida__media {
+      display: none;
+    }
 
-  /* Cuarto: vuelve hacia la izquierda y cierra la diagonal. */
-  .paso--4 {
-    grid-column: 2 / span 8;
-    grid-row: 4;
-    margin-top: clamp(64px, 9vw, 140px);
-  }
+    .paso__foto {
+      display: block;
+      margin-bottom: 12px;
+    }
 
-  .paso--4 figure {
-    grid-column: 1 / span 4;
-  }
+    .paso__foto :global(img) {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+    }
 
-  .paso--4 .paso__texto {
-    grid-column: 5 / span 4;
-  }
-
-  .paso--4 :global(img) {
-    aspect-ratio: 4 / 5;
-    object-position: 60% 50%;
-  }
-
-  @media (max-width: 960px) {
-    h2 {
-      grid-column: 1 / -1;
-      margin-bottom: 40px;
+    .paso:nth-child(even) .paso__foto {
+      width: 72%;
+      margin-left: auto;
     }
 
     .paso,
-    .paso--1,
-    .paso--2,
-    .paso--3,
-    .paso--4 {
-      grid-column: 1 / -1;
-      grid-row: auto;
-      display: block;
-      margin-top: 0;
-      margin-bottom: 56px;
+    :global(.js) .paso {
+      min-height: 0;
+      opacity: 1;
+      margin-bottom: 64px;
     }
 
     .paso:last-child {
       margin-bottom: 0;
     }
 
-    .paso figure {
-      width: 100%;
+    .paso h3 {
+      font-size: clamp(1.75rem, 7vw, 2.5rem);
     }
+  }
 
-    .paso--2 figure,
-    .paso--4 figure {
-      width: 62%;
-      margin-left: auto;
-    }
-
-    .paso--3 figure {
-      width: 78%;
-    }
-
-    .paso--2 .paso__texto,
-    .paso--4 .paso__texto {
-      margin-left: 38%;
-    }
-
-    .paso__texto {
-      margin-top: 16px;
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .foto,
+    :global(.js) .foto :global(img),
+    :global(.js) .paso {
+      transition: none;
     }
   }
 </style>
